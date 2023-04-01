@@ -71,4 +71,6 @@ To run the Online Learning Management System, follow these steps:
 4. Start the application using `mvn spring-boot:run`.
 5. Open your web browser and navigate to `http://localhost:8080` to access the application.
 
-Note: You will need to have Maven and a Java Development Kit (JDK) installed on your
+## About
+
+This repository is contributed by [@kartik1502](https://github.com/kartik1502), which mainly focuses on the Spring boot application using JWT Authentication.
