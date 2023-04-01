@@ -25,7 +25,16 @@ The Online Learning Management System is a web-based application that enables ed
 - Maven for dependency management
 - Git for version control
 
-The project can be further enhanced by implementing features such as discussion forums, course certificates, and integration with learning management systems.
+### Installation
+
+To run the Online Learning Management System, follow these steps:
+
+1. Clone the repository using Git.
+2. Navigate to the project directory.
+3. Run `mvn clean install` to install dependencies and build the project.
+4. Start the application using `mvn spring-boot:run`.
+5. Open your web browser and navigate to `http://localhost:8080` to access the application.
+
 
 ### Features Details
 
@@ -61,15 +70,7 @@ Users will be able to search for courses using keywords, filters, and categories
 
 The application will use JSON Web Tokens (JWTs) for authentication and authorization. This will help ensure that only authorized users are able to access the API endpoints and perform actions such as creating courses or enrolling in courses.
 
-### Installation
 
-To run the Online Learning Management System, follow these steps:
-
-1. Clone the repository using Git.
-2. Navigate to the project directory.
-3. Run `mvn clean install` to install dependencies and build the project.
-4. Start the application using `mvn spring-boot:run`.
-5. Open your web browser and navigate to `http://localhost:8080` to access the application.
 
 ## About
 
