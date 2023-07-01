@@ -1,9 +1,7 @@
 spring:
   application:
     name: STUDENT-SERVICE
-    responseCode: 200
-    bad_request: 403
-    conflict: 409
+
   datasource:
     url: jdbc:mysql://localhost:3306/learning_application_student
     username: root
@@ -15,15 +13,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  config:
+    import: configserver:http://localhost:8080
 
 server:
-  port: 8080
-
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service.uri:
-      defaultZone: http://localhost:8761/eureka
+  port: 8081
