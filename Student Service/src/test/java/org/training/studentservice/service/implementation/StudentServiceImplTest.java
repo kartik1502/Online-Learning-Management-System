@@ -174,4 +174,33 @@ public class StudentServiceImplTest {
         assertNotNull(result);
         assertEquals(2, result.size());
     }
+
+    @Test
+    void testGetStudentById_StudentNotFound() {
+
+        String studentId = "adce3e37-1b3e-4d55-9fa3-d544db25dc32";
+
+        Mockito.when(studentRepository.findById(studentId)).thenReturn(Optional.empty());
+        ResourseNotFound exception = assertThrows(ResourseNotFound.class,
+                () -> studentService.getStudentById(studentId));
+        assertEquals("Student with student Id: "+studentId+ " not found", exception.getMessage());
+    }
+
+    @Test
+    void testGetStudentById_Success() {
+
+        Student student = new Student();
+        student.setFirstName("Karthik");
+        student.setLastName("kulkarni");
+        student.setEmailId("kartikkulkarni1411@gmail.com");
+
+        Mockito.when(studentRepository.findById(Mockito.anyString())).thenReturn(Optional.of(student));
+
+        StudentDto studentDto = studentService.getStudentById(Mockito.anyString());
+        assertNotNull(studentDto);
+        assertEquals("Karthik", studentDto.getFirstName());
+        assertEquals("kulkarni", studentDto.getLastName());
+    }
+
+
 }

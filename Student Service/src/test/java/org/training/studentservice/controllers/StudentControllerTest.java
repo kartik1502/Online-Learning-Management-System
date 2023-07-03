@@ -81,4 +81,19 @@ public class StudentControllerTest {
         assertEquals(2, response.getBody().size());
         assertEquals(HttpStatus.OK ,response.getStatusCode());
     }
+
+    @Test
+    void testGetStudentById() {
+
+        StudentDto student = new StudentDto();
+        student.setFirstName("Karthik");
+        student.setLastName("kulkarni");
+        student.setEmailId("kartikkulkarni1411@gmail.com");
+
+        Mockito.when(studentService.getStudentById(Mockito.anyString())).thenReturn(student);
+
+        ResponseEntity<StudentDto> response = studentController.getStudentById(Mockito.anyString());
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
 }
