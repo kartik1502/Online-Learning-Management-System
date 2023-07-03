@@ -65,4 +65,14 @@ public class StudentServiceImpl implements StudentService {
             return studentDto;
         }).collect(Collectors.toList());
     }
+
+    @Override
+    public StudentDto getStudentById(String studentId) {
+
+        return studentRepository.findById(studentId).map(student -> {
+            StudentDto studentDto = new StudentDto();
+            BeanUtils.copyProperties(student, studentDto, "studentId");
+            return studentDto;
+        }).orElseThrow(() -> new ResourseNotFound("Student with student Id: "+studentId+ " not found"));
+    }
 }
