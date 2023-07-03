@@ -12,8 +12,10 @@ import org.training.studentservice.exception.ResourseNotFound;
 import org.training.studentservice.repository.StudentRepository;
 import org.training.studentservice.service.StudentService;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -54,5 +56,13 @@ public class StudentServiceImpl implements StudentService {
         return new ResponseDto("200", "Student deleted successfully");
     }
 
+    @Override
+    public List<StudentDto> getAllStudents() {
 
+        return studentRepository.findAll().stream().map(student -> {
+            StudentDto studentDto = new StudentDto();
+            BeanUtils.copyProperties(student, studentDto, "studentId");
+            return studentDto;
+        }).collect(Collectors.toList());
+    }
 }
