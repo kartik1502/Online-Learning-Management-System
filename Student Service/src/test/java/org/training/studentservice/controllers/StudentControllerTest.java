@@ -10,7 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.training.studentservice.dto.ResponseDto;
 import org.training.studentservice.dto.StudentDto;
+import org.training.studentservice.entity.Student;
 import org.training.studentservice.service.StudentService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -53,5 +57,28 @@ public class StudentControllerTest {
         ResponseEntity<ResponseDto> response = studentController.deleteById(studentId);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void testGetAllStudents() {
+
+        List<StudentDto> students = new ArrayList<>();
+        StudentDto student = new StudentDto();
+        student.setFirstName("Karthik");
+        student.setLastName("kulkarni");
+        student.setEmailId("kartikkulkarni1411@gmail.com");
+        students.add(student);
+        student = new StudentDto();
+        student.setFirstName("Kishan");
+        student.setLastName("kulkarni");
+        student.setEmailId("kulkarnikishan1502@gmail.com");
+        students.add(student);
+
+        Mockito.when(studentService.getAllStudents()).thenReturn(students);
+
+        ResponseEntity<List<StudentDto>> response = studentController.getAllStudents();
+        assertNotNull(response);
+        assertEquals(2, response.getBody().size());
+        assertEquals(HttpStatus.OK ,response.getStatusCode());
     }
 }

@@ -13,6 +13,8 @@ import org.training.studentservice.exception.ResourceConflictExists;
 import org.training.studentservice.exception.ResourseNotFound;
 import org.training.studentservice.repository.StudentRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -132,5 +134,44 @@ public class StudentServiceImplTest {
         ResponseDto responseDto = studentService.deleteStudent(student.getStudentId());
         assertNotNull(responseDto);
         assertEquals("Student deleted successfully", responseDto.getResponseMessage());
+    }
+
+    @Test
+    void testGetAllStudents_OneStudentPresent() {
+
+        List<Student> students = new ArrayList<>();
+        Student student = new Student();
+        student.setFirstName("Karthik");
+        student.setLastName("kulkarni");
+        student.setEmailId("kartikkulkarni1411@gmail.com");
+        students.add(student);
+
+        Mockito.when(studentRepository.findAll()).thenReturn(students);
+
+        List<StudentDto> result = studentService.getAllStudents();
+        assertNotNull(result);
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    void testGetAllStudent_MultipleStudent() {
+
+        List<Student> students = new ArrayList<>();
+        Student student = new Student();
+        student.setFirstName("Karthik");
+        student.setLastName("kulkarni");
+        student.setEmailId("kartikkulkarni1411@gmail.com");
+        students.add(student);
+        student = new Student();
+        student.setFirstName("Kishan");
+        student.setLastName("kulkarni");
+        student.setEmailId("kulkarnikishan1502@gmail.com");
+        students.add(student);
+
+        Mockito.when(studentRepository.findAll()).thenReturn(students);
+
+        List<StudentDto> result = studentService.getAllStudents();
+        assertNotNull(result);
+        assertEquals(2, result.size());
     }
 }
