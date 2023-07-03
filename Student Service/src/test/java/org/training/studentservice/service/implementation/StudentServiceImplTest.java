@@ -10,6 +10,7 @@ import org.training.studentservice.dto.ResponseDto;
 import org.training.studentservice.dto.StudentDto;
 import org.training.studentservice.entity.Student;
 import org.training.studentservice.exception.ResourceConflictExists;
+import org.training.studentservice.exception.ResourseNotFound;
 import org.training.studentservice.repository.StudentRepository;
 
 import java.util.Optional;
@@ -108,6 +109,28 @@ public class StudentServiceImplTest {
 
     }
 
+    @Test
+    void testDeleteStudent_StudentNotFound() {
 
+        String studentId = "245jkh12-24512435nmj-kjb5k1235-524k1jb51234";
+        Mockito.when(studentRepository.findById(studentId)).thenReturn(Optional.empty());
+        ResourseNotFound exception = assertThrows(ResourseNotFound.class,
+                () -> studentService.deleteStudent(studentId));
+        assertEquals("Student with student Id: "+studentId+ " not found", exception.getMessage());
+    }
 
+    @Test
+    void testDeleteStudent_Success() {
+
+        Student student = new Student();
+        student.setStudentId("245jkh12-24512435nmj-kjb5k1235-524k1jb51234");
+        student.setFirstName("Karthik");
+        student.setLastName("Kulkarni");
+        student.setEmailId("kartikkulkarni1411@gmail.com");
+
+        Mockito.when(studentRepository.findById(student.getStudentId())).thenReturn(Optional.of(student));
+        ResponseDto responseDto = studentService.deleteStudent(student.getStudentId());
+        assertNotNull(responseDto);
+        assertEquals("Student deleted successfully", responseDto.getResponseMessage());
+    }
 }

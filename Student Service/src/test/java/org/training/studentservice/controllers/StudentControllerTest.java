@@ -41,4 +41,17 @@ public class StudentControllerTest {
         assertEquals("Student added successfully", response.getBody().getResponseMessage());
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
+
+    @Test
+    void testDeleteStudent() {
+
+        String studentId = "adce3e37-1b3e-4d55-9fa3-d544db25dc32";
+        ResponseDto responseDto = new ResponseDto("200", "Student deleted successfully");
+
+        Mockito.when(studentService.deleteStudent(studentId)).thenReturn(responseDto);
+
+        ResponseEntity<ResponseDto> response = studentController.deleteById(studentId);
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
 }
