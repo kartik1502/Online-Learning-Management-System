@@ -8,6 +8,7 @@ import org.training.studentservice.dto.ResponseDto;
 import org.training.studentservice.dto.StudentDto;
 import org.training.studentservice.entity.Student;
 import org.training.studentservice.exception.ResourceConflictExists;
+import org.training.studentservice.exception.ResourseNotFound;
 import org.training.studentservice.repository.StudentRepository;
 import org.training.studentservice.service.StudentService;
 
@@ -42,6 +43,15 @@ public class StudentServiceImpl implements StudentService {
         newStudent.setStudentId(UUID.randomUUID().toString());
         studentRepository.save(newStudent);
         return new ResponseDto(responseCode, "Student added successfully");
+    }
+
+    @Override
+    public ResponseDto deleteStudent(String studentId) {
+
+        studentRepository.findById(studentId)
+                .orElseThrow(() -> new ResourseNotFound("Student with student Id: "+studentId+ " not found"));
+        studentRepository.deleteById(studentId);
+        return new ResponseDto("200", "Student deleted successfully");
     }
 
 

@@ -1,5 +1,6 @@
 package org.training.studentservice.exception;
 
+import org.hibernate.sql.OracleJoinFragment;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Value("${spring.application.conflict}")
     private String errorCodeConflict;
 
+    @Value("${spring.application.not_found}")
+    private String errorCodeNotFound;
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -39,4 +43,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new ErrorResponse(errorCodeConflict, Set.of(ex.getLocalizedMessage())), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(ResourseNotFound.class)
+    public ResponseEntity<Object> handleResourceNotFoundException(ResourseNotFound ex) {
+        return new ResponseEntity<>(new ErrorResponse(errorCodeNotFound, Set.of(ex.getLocalizedMessage())), HttpStatus.NOT_FOUND);
+    }
 }
