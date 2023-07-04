@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.beans.BeanUtils;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.training.studentservice.dto.ResponseDto;
 import org.training.studentservice.dto.StudentDto;
@@ -202,5 +203,34 @@ public class StudentServiceImplTest {
         assertEquals("kulkarni", studentDto.getLastName());
     }
 
+    @Test
+    void testUpdateStudent_StudentNotFound() {
 
+        String studentId = "adce3e37-1b3e-4d55-9fa3-d544db25dc32";
+
+        Mockito.when(studentRepository.findById(studentId)).thenReturn(Optional.empty());
+        StudentDto studentDto = Mockito.mock(StudentDto.class);
+        ResourseNotFound exception = assertThrows(ResourseNotFound.class,
+                () -> studentService.updateStudent(studentId, studentDto));
+        assertEquals("Student with student Id: "+studentId+ " not found", exception.getMessage());
+    }
+
+    @Test
+    void testUpdateStudent_Success() {
+
+        Student student = new Student();
+        student.setFirstName("Karthik");
+        student.setLastName("Kulkarni");
+        student.setEmailId("kartikkulkarni1411@gmail.com");
+        student.setContactNo("6361921186");
+
+        String studentId = "adce3e37-1b3e-4d55-9fa3-d544db25dc32";
+        Mockito.when(studentRepository.findById(studentId)).thenReturn(Optional.of(student));
+
+        StudentDto studentDto = new StudentDto();
+        BeanUtils.copyProperties(student, studentDto);
+        ResponseDto responseDto = studentService.updateStudent(studentId, studentDto);
+        assertNotNull(responseDto);
+        assertEquals("Student updated successfully", responseDto.getResponseMessage());
+    }
 }
