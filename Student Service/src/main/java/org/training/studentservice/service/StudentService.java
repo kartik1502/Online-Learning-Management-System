@@ -13,4 +13,6 @@ public interface StudentService {
     List<StudentDto> getAllStudents();
 
     StudentDto getStudentById(String studentId);
+
+    ResponseDto updateStudent(String studentId, StudentDto studentDto);
 }

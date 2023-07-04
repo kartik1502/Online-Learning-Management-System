@@ -38,4 +38,9 @@ public class StudentController {
     public ResponseEntity<StudentDto> getStudentById(@PathVariable String studentId) {
         return new ResponseEntity<>(studentService.getStudentById(studentId), HttpStatus.OK);
     }
+
+    @PutMapping("/{studentId}")
+    public ResponseEntity<ResponseDto> updateStudent(@PathVariable String studentId,@RequestBody @Valid StudentDto studentDto) {
+        return new ResponseEntity<>(studentService.updateStudent(studentId, studentDto), HttpStatus.OK);
+    }
 }

@@ -75,4 +75,14 @@ public class StudentServiceImpl implements StudentService {
             return studentDto;
         }).orElseThrow(() -> new ResourseNotFound("Student with student Id: "+studentId+ " not found"));
     }
+
+    @Override
+    public ResponseDto updateStudent(String studentId, StudentDto studentDto) {
+
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new ResourseNotFound("Student with student Id: "+studentId+ " not found"));
+        BeanUtils.copyProperties(studentDto, student, "studentId");
+        studentRepository.save(student);
+        return new ResponseDto(responseCode, "Student updated successfully");
+    }
 }
