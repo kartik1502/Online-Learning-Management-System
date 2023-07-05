@@ -1,6 +1,6 @@
 spring:
   application:
-    name: MENTOR_SERVICE
+    name: MENTOR-SERVICE
   datasource:
     username: root
     password: root
