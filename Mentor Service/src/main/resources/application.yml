@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: MENTOR_SERVICE
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/learning_application_mentor
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+  config:
+    import: configserver:http://localhost:8080
+
+server:
+  port: 8083
+
