@@ -8,6 +8,7 @@ import org.training.mentorservice.dto.MentorDto;
 import org.training.mentorservice.dto.ResponseDto;
 import org.training.mentorservice.entity.Mentor;
 import org.training.mentorservice.exception.ResourceConflictException;
+import org.training.mentorservice.exception.ResourceNotFound;
 import org.training.mentorservice.repository.MentorRepository;
 import org.training.mentorservice.service.MentorService;
 
@@ -51,7 +52,7 @@ public class MentorServiceImpl implements MentorService {
             MentorDto mentorDto = new MentorDto();
             BeanUtils.copyProperties(mentor, mentorDto, "mentorId");
             return mentorDto;
-        }).orElseThrow(() -> new ResourceConflictException("Mentor with mentor Id: "+mentorId+ " not found"));
+        }).orElseThrow(() -> new ResourceNotFound("Mentor with mentor Id: "+mentorId+ " not found"));
     }
 
 

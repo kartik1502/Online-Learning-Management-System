@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.management.ObjectName;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,6 +23,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Value("${spring.application.conflict}")
     private String errorCodeConflict;
+
+    @Value("${spring.application.not_found}")
+    private String errorCodeNotFound;
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
@@ -39,4 +43,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new ErrorResponse(errorCodeConflict, Set.of(ex.getLocalizedMessage())), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(ResourceNotFound.class)
+    public ResponseEntity<Object> handleResourceNotFound(ResourceNotFound ex) {
+        return new ResponseEntity<>(new ErrorResponse(errorCodeNotFound, Set.of(ex.getLocalizedMessage())), HttpStatus.NOT_FOUND);
+    }
 }
