@@ -6,4 +6,6 @@ import org.training.mentorservice.dto.ResponseDto;
 public interface MentorService {
 
     ResponseDto addMentor(MentorDto mentorDto);
+
+    MentorDto getMentorById(String mentorId);
 }

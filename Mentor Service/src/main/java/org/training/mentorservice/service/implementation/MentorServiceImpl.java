@@ -43,4 +43,16 @@ public class MentorServiceImpl implements MentorService {
         mentorRepository.save(newMentor);
         return new ResponseDto(responseCode, "Mentor added Successfully");
     }
+
+    @Override
+    public MentorDto getMentorById(String mentorId) {
+
+        return mentorRepository.findById(mentorId).map(mentor -> {
+            MentorDto mentorDto = new MentorDto();
+            BeanUtils.copyProperties(mentor, mentorDto, "mentorId");
+            return mentorDto;
+        }).orElseThrow(() -> new ResourceConflictException("Mentor with mentor Id: "+mentorId+ " not found"));
+    }
+
+
 }
