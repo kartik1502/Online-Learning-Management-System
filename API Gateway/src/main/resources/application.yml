@@ -9,6 +9,11 @@ spring:
           uri: lb://STUDENT-SERVICE
           predicates:
             - Path=/students/**
+
+        - id: MENTOR-SERVICE
+          uri: lb://MENTOR-SERVICE
+          predicates:
+            - Path=/mentors/**
   config:
     import: configserver:http://localhost:8080
 server:
