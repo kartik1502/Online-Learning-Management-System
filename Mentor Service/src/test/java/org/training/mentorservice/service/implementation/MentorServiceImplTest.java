@@ -14,6 +14,8 @@ import org.training.mentorservice.exception.ResourceConflictException;
 import org.training.mentorservice.exception.ResourceNotFound;
 import org.training.mentorservice.repository.MentorRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -129,5 +131,39 @@ public class MentorServiceImplTest {
         MentorDto mentorDto = mentorService.getMentorById(mentorId);
         assertNotNull(mentorDto);
         assertEquals("Karthik", mentorDto.getMentorName());
+    }
+
+    @Test
+    void testGetAllMentors_withMentors() {
+
+        List<Mentor> mentors = new ArrayList<>();
+        Mentor mentor = new Mentor();
+        mentor.setMentorName("Karthik Kulkarni");
+        mentor.setContactNo("6361921186");
+        mentor.setEmailId("kartikkulkarni1411@gmail.com");
+        mentors.add(mentor);
+        mentor = new Mentor();
+        mentor.setMentorName("Kishan Kulkarni");
+        mentor.setContactNo("6361921187");
+        mentor.setEmailId("kishankulkarni1411@gmail.com");
+        mentors.add(mentor);
+
+        Mockito.when(mentorRepository.findAll()).thenReturn(mentors);
+
+        List<MentorDto> result = mentorService.getAllMentors();
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    void testGetAllMentors_EmptyList() {
+
+        List<Mentor> mentors = new ArrayList<>();
+
+        Mockito.when(mentorRepository.findAll()).thenReturn(mentors);
+        List<MentorDto> result = mentorService.getAllMentors();
+        assertNotNull(result);
+        assertEquals(0, result.size());
     }
 }
