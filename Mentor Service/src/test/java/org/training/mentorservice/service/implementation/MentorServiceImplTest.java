@@ -166,4 +166,34 @@ public class MentorServiceImplTest {
         assertNotNull(result);
         assertEquals(0, result.size());
     }
+
+    @Test
+    void testDeleteMentor_MentorNotFound() {
+
+        String mentorId = "3766aadf-b55f-45b1-9d0b-61304007cc68";
+
+        Mockito.when(mentorRepository.findById(mentorId)).thenReturn(Optional.empty());
+
+        ResourceNotFound exception = assertThrows(ResourceNotFound.class,
+                () -> mentorService.deleteMentor(mentorId));
+        assertEquals("Mentor with mentor Id: " + mentorId + " not found", exception.getMessage());
+    }
+
+    @Test
+    void testDeleteMentor_Success() {
+
+        String mentorId = "3766aadf-b55f-45b1-9d0b-61304007cc68";
+        Mentor mentor = Mentor.builder()
+                .mentorId("3766aadf-b55f-45b1-9d0b-61304007cc68")
+                .mentorName("Karthik")
+                .emailId("kartikkulkarni1411@gmail.com")
+                .contactNo("6361921186")
+                .build();
+
+        Mockito.when(mentorRepository.findById(mentorId)).thenReturn(Optional.of(mentor));
+
+        ResponseDto responseDto = mentorService.deleteMentor(mentorId);
+        assertNotNull(responseDto);
+        assertEquals("Mentor Deleted Successfully", responseDto.getResponseMessage());
+    }
 }

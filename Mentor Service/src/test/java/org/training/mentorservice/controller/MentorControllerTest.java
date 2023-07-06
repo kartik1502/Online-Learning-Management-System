@@ -80,4 +80,18 @@ public class MentorControllerTest {
         assertEquals(1, result.getBody().size());
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
+
+    @Test
+    void testDeleteMentor() {
+
+        String mentorId = "3766aadf-b55f-45b1-9d0b-61304007cc68";
+        ResponseDto responseDto = new ResponseDto("200", "Mentor deleted Successfully");
+
+        Mockito.when(mentorService.deleteMentor(mentorId)).thenReturn(responseDto);
+
+        ResponseEntity<ResponseDto> response = mentorController.deleteById(mentorId);
+        assertNotNull(response);
+        assertEquals("Mentor deleted Successfully", response.getBody().getResponseMessage());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
 }
