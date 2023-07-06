@@ -196,4 +196,36 @@ public class MentorServiceImplTest {
         assertNotNull(responseDto);
         assertEquals("Mentor Deleted Successfully", responseDto.getResponseMessage());
     }
+
+    @Test
+    void testUpdateMentor_MentorNotFound() {
+
+        String mentorId = "12f00760-d63c-48e0-9739-589ecabb6e05";
+        MentorDto mentorDto = Mockito.mock(MentorDto.class);
+
+        Mockito.when(mentorRepository.findById(mentorId)).thenReturn(Optional.empty());
+
+        ResourceNotFound exception = assertThrows(ResourceNotFound.class,
+                () -> mentorService.updateMentor(mentorId, mentorDto));
+        assertEquals("Mentor with mentor Id: " + mentorId + " not found", exception.getMessage());
+    }
+
+    @Test
+    void testUpdateMentor_Success() {
+
+        String mentorId = "12f00760-d63c-48e0-9739-589ecabb6e05";
+        Mentor mentor = Mentor.builder()
+                .mentorId("12f00760-d63c-48e0-9739-589ecabb6e05")
+                .mentorName("Karthik")
+                .emailId("kartikkulkarni1411@gmail.com")
+                .contactNo("6361921186")
+                .build();
+
+        Mockito.when(mentorRepository.findById(mentorId)).thenReturn(Optional.of(mentor));
+
+        MentorDto mentorDto = Mockito.mock(MentorDto.class);
+        ResponseDto responseDto = mentorService.updateMentor(mentorId, mentorDto);
+        assertNotNull(responseDto);
+        assertEquals("Mentor Updated Successfully", responseDto.getResponseMessage());
+    }
 }

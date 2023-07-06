@@ -94,4 +94,19 @@ public class MentorControllerTest {
         assertEquals("Mentor deleted Successfully", response.getBody().getResponseMessage());
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
+
+    @Test
+    void testUpdateMentor() {
+
+        String mentorId = "12f00760-d63c-48e0-9739-589ecabb6e05";
+        MentorDto mentorDto = Mockito.mock(MentorDto.class);
+        ResponseDto responseDto = new ResponseDto("200", "Mentor Updated Successfully");
+
+        Mockito.when(mentorService.updateMentor(mentorId, mentorDto)).thenReturn(responseDto);
+
+        ResponseEntity<ResponseDto> response = mentorController.updateMentor(mentorId, mentorDto);
+        assertNotNull(response);
+        assertEquals("Mentor Updated Successfully", response.getBody().getResponseMessage());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
 }
