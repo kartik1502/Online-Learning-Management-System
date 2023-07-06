@@ -114,4 +114,23 @@ public class StudentControllerTest {
         assertEquals("Student updated Successfully", response.getBody().getResponseMessage());
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
+
+    @Test
+    void testGetAllStudentsByMentorId() {
+
+        List<StudentDto> students = new ArrayList<>();
+        StudentDto student = new StudentDto();
+        student.setFirstName("Karthik");
+        student.setLastName("kulkarni");
+        student.setEmailId("kartikkulkarni1411@gmail.com");
+        student.setMentorId("12f00760-d63c-48e0-9739-589ecabb6e05");
+        students.add(student);
+
+        Mockito.when(studentService.getAllStudentsByMentorId(Mockito.anyString())).thenReturn(students);
+
+        ResponseEntity<List<StudentDto>> response = studentController.getAllStudentsByMentorId(Mockito.anyString());
+        assertNotNull(response);
+        assertEquals(1, response.getBody().size());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
 }
