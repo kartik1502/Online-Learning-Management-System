@@ -37,4 +37,10 @@ public class MentorController {
     public ResponseEntity<ResponseDto> deleteById(@PathVariable String mentorId) {
         return new ResponseEntity<>(mentorService.deleteMentor(mentorId), HttpStatus.OK);
     }
+
+    @PutMapping("/{mentorId}")
+    public ResponseEntity<ResponseDto> updateMentor(@PathVariable String mentorId, @RequestBody @Valid MentorDto mentorDto) {
+        return new ResponseEntity<>(mentorService.updateMentor(mentorId, mentorDto), HttpStatus.OK);
+    }
+
 }

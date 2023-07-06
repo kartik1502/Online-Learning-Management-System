@@ -77,4 +77,18 @@ public class MentorServiceImpl implements MentorService {
                 });
         return new ResponseDto(responseCode,"Mentor Deleted Successfully");
     }
+
+    @Override
+    public ResponseDto updateMentor(String mentorId, MentorDto mentorDto) {
+
+        mentorRepository.findById(mentorId).ifPresentOrElse(
+                mentor -> {
+                    BeanUtils.copyProperties(mentorDto, mentor);
+                    mentorRepository.save(mentor);
+                },
+                () -> {
+                    throw new ResourceNotFound("Mentor with mentor Id: " + mentorId + " not found");
+                });
+        return new ResponseDto(responseCode,"Mentor Updated Successfully");
+    }
 }
