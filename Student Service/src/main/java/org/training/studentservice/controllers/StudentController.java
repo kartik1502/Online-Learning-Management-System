@@ -43,4 +43,9 @@ public class StudentController {
     public ResponseEntity<ResponseDto> updateStudent(@PathVariable String studentId,@RequestBody @Valid StudentDto studentDto) {
         return new ResponseEntity<>(studentService.updateStudent(studentId, studentDto), HttpStatus.OK);
     }
+
+    @GetMapping("/mentors/{mentorId}")
+    public ResponseEntity<List<StudentDto>> getAllStudentsByMentorId(@PathVariable String mentorId) {
+        return new ResponseEntity<>(studentService.getAllStudentsByMentorId(mentorId), HttpStatus.OK);
+    }
 }

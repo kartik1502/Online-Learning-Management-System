@@ -85,4 +85,15 @@ public class StudentServiceImpl implements StudentService {
         studentRepository.save(student);
         return new ResponseDto(responseCode, "Student updated successfully");
     }
+
+    @Override
+    public List<StudentDto> getAllStudentsByMentorId(String mentorId) {
+
+        return studentRepository.findAllByMentorId(mentorId).stream().map(student -> {
+
+            StudentDto studentDto = new StudentDto();
+            BeanUtils.copyProperties(student, studentDto, "studentId");
+            return studentDto;
+        }).collect(Collectors.toList());
+    }
 }

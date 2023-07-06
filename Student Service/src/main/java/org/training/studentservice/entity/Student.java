@@ -25,4 +25,6 @@ public class Student {
     private String emailId;
 
     private String contactNo;
+
+    private String mentorId;
 }
