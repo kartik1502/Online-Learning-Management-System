@@ -67,5 +67,14 @@ public class MentorServiceImpl implements MentorService {
         }).collect(Collectors.toList());
     }
 
+    @Override
+    public ResponseDto deleteMentor(String mentorId) {
 
+        mentorRepository.findById(mentorId).ifPresentOrElse(
+                mentor -> mentorRepository.deleteById(mentorId),
+                () -> {
+                    throw new ResourceNotFound("Mentor with mentor Id: " + mentorId + " not found");
+                });
+        return new ResponseDto(responseCode,"Mentor Deleted Successfully");
+    }
 }

@@ -32,4 +32,9 @@ public class MentorController {
     public ResponseEntity<List<MentorDto>> getAllMentors() {
         return new ResponseEntity<>(mentorService.getAllMentors(), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{mentorId}")
+    public ResponseEntity<ResponseDto> deleteById(@PathVariable String mentorId) {
+        return new ResponseEntity<>(mentorService.deleteMentor(mentorId), HttpStatus.OK);
+    }
 }
