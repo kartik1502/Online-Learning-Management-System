@@ -12,8 +12,10 @@ import org.training.mentorservice.exception.ResourceNotFound;
 import org.training.mentorservice.repository.MentorRepository;
 import org.training.mentorservice.service.MentorService;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class MentorServiceImpl implements MentorService {
@@ -53,6 +55,16 @@ public class MentorServiceImpl implements MentorService {
             BeanUtils.copyProperties(mentor, mentorDto, "mentorId");
             return mentorDto;
         }).orElseThrow(() -> new ResourceNotFound("Mentor with mentor Id: "+mentorId+ " not found"));
+    }
+
+    @Override
+    public List<MentorDto> getAllMentors() {
+
+        return mentorRepository.findAll().stream().map(mentor -> {
+            MentorDto mentorDto = new MentorDto();
+            BeanUtils.copyProperties(mentor, mentorDto, "mentorId");
+            return mentorDto;
+        }).collect(Collectors.toList());
     }
 
 

@@ -9,6 +9,7 @@ import org.training.mentorservice.dto.ResponseDto;
 import org.training.mentorservice.service.MentorService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/mentors")
@@ -25,5 +26,10 @@ public class MentorController {
     @GetMapping("/{mentorId}")
     public ResponseEntity<MentorDto> getMentorById(@PathVariable String mentorId) {
         return new ResponseEntity<>(mentorService.getMentorById(mentorId), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<MentorDto>> getAllMentors() {
+        return new ResponseEntity<>(mentorService.getAllMentors(), HttpStatus.OK);
     }
 }
