@@ -228,4 +228,29 @@ public class MentorServiceImplTest {
         assertNotNull(responseDto);
         assertEquals("Mentor Updated Successfully", responseDto.getResponseMessage());
     }
+
+    @Test
+    void testGetAllMentorsById() {
+
+        List<Mentor> mentors = new ArrayList<>();
+        Mentor mentor = new Mentor();
+        mentor.setMentorId("eae4d3f8-6a27-4f58-a807-4d18f9dc6dfe");
+        mentor.setMentorName("Karthik Kulkarni");
+        mentor.setContactNo("6361921186");
+        mentor.setEmailId("kartikkulkarni1411@gmail.com");
+        mentors.add(mentor);
+        mentor = new Mentor();
+        mentor.setMentorId("12f00760-d63c-48e0-9739-589ecabb6e05");
+        mentor.setMentorName("Kishan Kulkarni");
+        mentor.setContactNo("6361921187");
+        mentor.setEmailId("kishankulkarni1411@gmail.com");
+        mentors.add(mentor);
+        List<String> mentorIds = List.of("eae4d3f8-6a27-4f58-a807-4d18f9dc6dfe", "12f00760-d63c-48e0-9739-589ecabb6e05");
+
+        Mockito.when(mentorRepository.findAllById(mentorIds)).thenReturn(mentors);
+
+        List<MentorDto> result = mentorService.getAllMentorsById(mentorIds);
+        assertNotNull(result);
+        assertEquals(2, result.size());
+    }
 }

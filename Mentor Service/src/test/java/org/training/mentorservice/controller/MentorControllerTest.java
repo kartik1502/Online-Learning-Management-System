@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.training.mentorservice.dto.MentorDto;
 import org.training.mentorservice.dto.ResponseDto;
+import org.training.mentorservice.entity.Mentor;
 import org.training.mentorservice.service.MentorService;
 
 import java.util.ArrayList;
@@ -108,5 +109,29 @@ public class MentorControllerTest {
         assertNotNull(response);
         assertEquals("Mentor Updated Successfully", response.getBody().getResponseMessage());
         assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void testGetAllMentorsById() {
+
+        List<MentorDto> mentors = new ArrayList<>();
+        MentorDto mentor = new MentorDto();
+        mentor.setMentorName("Karthik Kulkarni");
+        mentor.setContactNo("6361921186");
+        mentor.setEmailId("kartikkulkarni1411@gmail.com");
+        mentors.add(mentor);
+        mentor = new MentorDto();
+        mentor.setMentorName("Kishan Kulkarni");
+        mentor.setContactNo("6361921187");
+        mentor.setEmailId("kishankulkarni1411@gmail.com");
+        mentors.add(mentor);
+        List<String> mentorIds = List.of("eae4d3f8-6a27-4f58-a807-4d18f9dc6dfe", "12f00760-d63c-48e0-9739-589ecabb6e05");
+
+        Mockito.when(mentorService.getAllMentorsById(mentorIds)).thenReturn(mentors);
+
+        ResponseEntity<List<MentorDto>> result = mentorController.getAllMentorsById(mentorIds);
+        assertNotNull(result);
+        assertEquals(2, result.getBody().size());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 }
