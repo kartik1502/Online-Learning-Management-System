@@ -91,4 +91,14 @@ public class MentorServiceImpl implements MentorService {
                 });
         return new ResponseDto(responseCode,"Mentor Updated Successfully");
     }
+
+    @Override
+    public List<MentorDto> getAllMentorsById(List<String> mentorIds) {
+
+        return mentorRepository.findAllById(mentorIds).stream().map(mentor -> {
+            MentorDto mentorDto = new MentorDto();
+            BeanUtils.copyProperties(mentor, mentorDto, "mentorId");
+            return mentorDto;
+        }).collect(Collectors.toList());
+    }
 }

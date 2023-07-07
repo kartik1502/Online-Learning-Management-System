@@ -16,4 +16,6 @@ public interface MentorService {
     ResponseDto deleteMentor(String mentorId);
 
     ResponseDto updateMentor(String mentorId, MentorDto mentorDto);
+
+    List<MentorDto> getAllMentorsById(List<String> mentorIds);
 }

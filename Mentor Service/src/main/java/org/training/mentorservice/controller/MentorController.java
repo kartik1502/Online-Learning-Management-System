@@ -43,4 +43,9 @@ public class MentorController {
         return new ResponseEntity<>(mentorService.updateMentor(mentorId, mentorDto), HttpStatus.OK);
     }
 
+    @GetMapping("/ids")
+    public ResponseEntity<List<MentorDto>> getAllMentorsById(@RequestParam List<String> mentorIds){
+        return new ResponseEntity<>(mentorService.getAllMentorsById(mentorIds), HttpStatus.OK);
+    }
+
 }
