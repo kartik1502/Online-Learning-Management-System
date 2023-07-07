@@ -93,12 +93,8 @@ public class MentorServiceImpl implements MentorService {
     }
 
     @Override
-    public List<MentorDto> getAllMentorsById(List<String> mentorIds) {
+    public List<Mentor> getAllMentorsById(List<String> mentorIds) {
 
-        return mentorRepository.findAllById(mentorIds).stream().map(mentor -> {
-            MentorDto mentorDto = new MentorDto();
-            BeanUtils.copyProperties(mentor, mentorDto, "mentorId");
-            return mentorDto;
-        }).collect(Collectors.toList());
+        return mentorRepository.findAllById(mentorIds).stream().collect(Collectors.toList());
     }
 }

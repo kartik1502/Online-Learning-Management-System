@@ -2,6 +2,7 @@ package org.training.mentorservice.service;
 
 import org.training.mentorservice.dto.MentorDto;
 import org.training.mentorservice.dto.ResponseDto;
+import org.training.mentorservice.entity.Mentor;
 
 import java.util.List;
 
@@ -17,5 +18,5 @@ public interface MentorService {
 
     ResponseDto updateMentor(String mentorId, MentorDto mentorDto);
 
-    List<MentorDto> getAllMentorsById(List<String> mentorIds);
+    List<Mentor> getAllMentorsById(List<String> mentorIds);
 }

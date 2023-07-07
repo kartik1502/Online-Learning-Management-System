@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.training.mentorservice.dto.MentorDto;
 import org.training.mentorservice.dto.ResponseDto;
+import org.training.mentorservice.entity.Mentor;
 import org.training.mentorservice.service.MentorService;
 
 import javax.validation.Valid;
@@ -44,7 +45,7 @@ public class MentorController {
     }
 
     @GetMapping("/ids")
-    public ResponseEntity<List<MentorDto>> getAllMentorsById(@RequestParam List<String> mentorIds){
+    public ResponseEntity<List<Mentor>> getAllMentorsById(@RequestParam List<String> mentorIds){
         return new ResponseEntity<>(mentorService.getAllMentorsById(mentorIds), HttpStatus.OK);
     }
 

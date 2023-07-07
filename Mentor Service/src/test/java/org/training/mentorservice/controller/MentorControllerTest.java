@@ -114,13 +114,13 @@ public class MentorControllerTest {
     @Test
     void testGetAllMentorsById() {
 
-        List<MentorDto> mentors = new ArrayList<>();
-        MentorDto mentor = new MentorDto();
+        List<Mentor> mentors = new ArrayList<>();
+        Mentor mentor = new Mentor();
         mentor.setMentorName("Karthik Kulkarni");
         mentor.setContactNo("6361921186");
         mentor.setEmailId("kartikkulkarni1411@gmail.com");
         mentors.add(mentor);
-        mentor = new MentorDto();
+        mentor = new Mentor();
         mentor.setMentorName("Kishan Kulkarni");
         mentor.setContactNo("6361921187");
         mentor.setEmailId("kishankulkarni1411@gmail.com");
@@ -129,7 +129,7 @@ public class MentorControllerTest {
 
         Mockito.when(mentorService.getAllMentorsById(mentorIds)).thenReturn(mentors);
 
-        ResponseEntity<List<MentorDto>> result = mentorController.getAllMentorsById(mentorIds);
+        ResponseEntity<List<Mentor>> result = mentorController.getAllMentorsById(mentorIds);
         assertNotNull(result);
         assertEquals(2, result.getBody().size());
         assertEquals(HttpStatus.OK, result.getStatusCode());

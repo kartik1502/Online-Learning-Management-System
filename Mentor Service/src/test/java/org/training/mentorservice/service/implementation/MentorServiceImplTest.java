@@ -249,7 +249,7 @@ public class MentorServiceImplTest {
 
         Mockito.when(mentorRepository.findAllById(mentorIds)).thenReturn(mentors);
 
-        List<MentorDto> result = mentorService.getAllMentorsById(mentorIds);
+        List<Mentor> result = mentorService.getAllMentorsById(mentorIds);
         assertNotNull(result);
         assertEquals(2, result.size());
     }
