@@ -7,11 +7,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.BeanUtils;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.training.studentservice.dto.Mentor;
+import org.training.studentservice.dto.MentorDto;
 import org.training.studentservice.dto.ResponseDto;
 import org.training.studentservice.dto.StudentDto;
 import org.training.studentservice.entity.Student;
 import org.training.studentservice.exception.ResourceConflictExists;
 import org.training.studentservice.exception.ResourseNotFound;
+import org.training.studentservice.external.MentorService;
 import org.training.studentservice.repository.StudentRepository;
 
 import java.util.ArrayList;
@@ -29,6 +32,8 @@ public class StudentServiceImplTest {
     @Mock
     private StudentRepository studentRepository;
 
+    @Mock
+    private MentorService mentorService;
     @Test
     void testAddStudent_StudentPresent_SameEmailId(){
 
@@ -237,18 +242,31 @@ public class StudentServiceImplTest {
     @Test
     void testGetAllStudentsByMentorId() {
 
+        String mentorId = "12f00760-d63c-48e0-9739-589ecabb6e05";
         List<Student> students = new ArrayList<>();
         Student student = new Student();
         student.setFirstName("Karthik");
         student.setLastName("kulkarni");
         student.setEmailId("kartikkulkarni1411@gmail.com");
-        student.setMentorId("12f00760-d63c-48e0-9739-589ecabb6e05");
+        students.add(student);
+        student = new Student();
+        student.setFirstName("Kishan");
+        student.setLastName("kulkarni");
+        student.setEmailId("kulkarnikishan1502@gmail.com");
         students.add(student);
 
-        Mockito.when(studentRepository.findAllByMentorId(Mockito.anyString())).thenReturn(students);
+        Mockito.when(studentRepository.findAllByMentorId(mentorId)).thenReturn(students);
 
-        List<StudentDto> result = studentService.getAllStudentsByMentorId("12f00760-d63c-48e0-9739-589ecabb6e05");
-        assertNotNull(result);
-        assertEquals(1, result.size());
+        MentorDto mentorDto = MentorDto.builder()
+                .mentorName("Kishan")
+                .contactNo("7845921569")
+                .emailId("kishankulkarni1502@gmail.com")
+                .designation("Professor").build();
+
+        Mockito.when(mentorService.getAllMentorsByIds(mentorId)).thenReturn(mentorDto);
+
+        Mentor mentor = studentService.getAllStudentsByMentorId(mentorId);
+        assertNotNull(mentor);
+        assertEquals(2, mentor.getStudentDtos().size());
     }
 }

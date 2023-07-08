@@ -8,6 +8,8 @@ import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.training.studentservice.dto.Mentor;
+import org.training.studentservice.dto.MentorDto;
 import org.training.studentservice.dto.ResponseDto;
 import org.training.studentservice.dto.StudentDto;
 import org.training.studentservice.entity.Student;
@@ -118,19 +120,25 @@ public class StudentControllerTest {
     @Test
     void testGetAllStudentsByMentorId() {
 
+        String mentorId = "12f00760-d63c-48e0-9739-589ecabb6e05";
         List<StudentDto> students = new ArrayList<>();
         StudentDto student = new StudentDto();
         student.setFirstName("Karthik");
         student.setLastName("kulkarni");
         student.setEmailId("kartikkulkarni1411@gmail.com");
-        student.setMentorId("12f00760-d63c-48e0-9739-589ecabb6e05");
         students.add(student);
+        Mentor mentorDto = Mentor.builder()
+                .mentorName("Kishan")
+                .contactNo("7845921569")
+                .emailId("kishankulkarni1502@gmail.com")
+                .designation("Professor")
+                .studentDtos(students).build();
 
-        Mockito.when(studentService.getAllStudentsByMentorId(Mockito.anyString())).thenReturn(students);
+        Mockito.when(studentService.getAllStudentsByMentorId(mentorId)).thenReturn(mentorDto);
 
-        ResponseEntity<List<StudentDto>> response = studentController.getAllStudentsByMentorId(Mockito.anyString());
+        ResponseEntity<Mentor> response = studentController.getAllStudentsByMentorId(mentorId);
         assertNotNull(response);
-        assertEquals(1, response.getBody().size());
+        assertEquals(1, response.getBody().getStudentDtos().size());
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 }
