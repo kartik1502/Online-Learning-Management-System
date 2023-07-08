@@ -1,5 +1,6 @@
 package org.training.studentservice.service;
 
+import org.training.studentservice.dto.Mentor;
 import org.training.studentservice.dto.ResponseDto;
 import org.training.studentservice.dto.StudentDto;
 
@@ -16,5 +17,5 @@ public interface StudentService {
 
     ResponseDto updateStudent(String studentId, StudentDto studentDto);
 
-    List<StudentDto> getAllStudentsByMentorId(String mentorId);
+    Mentor getAllStudentsByMentorId(String mentorId);
 }

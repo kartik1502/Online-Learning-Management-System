@@ -31,5 +31,4 @@ public class StudentDto {
     @Pattern(regexp = "[6789][0-9]{9}", message = "Contact number should contain only 10 digits and should be a valid number")
     private String contactNo;
 
-    private String mentorId;
 }

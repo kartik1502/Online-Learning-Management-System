@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.training.studentservice.dto.Mentor;
 import org.training.studentservice.dto.ResponseDto;
 import org.training.studentservice.dto.StudentDto;
 import org.training.studentservice.service.StudentService;
@@ -45,7 +46,7 @@ public class StudentController {
     }
 
     @GetMapping("/mentors/{mentorId}")
-    public ResponseEntity<List<StudentDto>> getAllStudentsByMentorId(@PathVariable String mentorId) {
+    public ResponseEntity<Mentor> getAllStudentsByMentorId(@PathVariable String mentorId) {
         return new ResponseEntity<>(studentService.getAllStudentsByMentorId(mentorId), HttpStatus.OK);
     }
 }
