@@ -103,6 +103,7 @@ public class StudentServiceImpl implements StudentService {
                     BeanUtils.copyProperties(student, studentDto, "studentId");
                     return studentDto;
                 }).collect(Collectors.toList());
+
         MentorDto mentorDto = mentorService.getAllMentorsByIds(mentorId);
         Mentor mentor = new Mentor();
         BeanUtils.copyProperties(mentorDto, mentor);
