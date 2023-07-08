@@ -12,6 +12,7 @@ import org.training.mentorservice.dto.ResponseDto;
 import org.training.mentorservice.entity.Mentor;
 import org.training.mentorservice.exception.ResourceConflictException;
 import org.training.mentorservice.exception.ResourceNotFound;
+import org.training.mentorservice.external.StudentService;
 import org.training.mentorservice.repository.MentorRepository;
 
 import java.util.ArrayList;
@@ -28,6 +29,9 @@ public class MentorServiceImplTest {
 
     @Mock
     private MentorRepository mentorRepository;
+
+    @Mock
+    private StudentService studentService;
 
     @Test
     void testAddMentor_MentorPresent_SameEmailIdAndContactNo() {
@@ -191,6 +195,9 @@ public class MentorServiceImplTest {
                 .build();
 
         Mockito.when(mentorRepository.findById(mentorId)).thenReturn(Optional.of(mentor));
+
+        ResponseDto studentResponse = Mockito.mock(ResponseDto.class);
+        Mockito.when(studentService.updateStudents(mentorId)).thenReturn(studentResponse);
 
         ResponseDto responseDto = mentorService.deleteMentor(mentorId);
         assertNotNull(responseDto);
