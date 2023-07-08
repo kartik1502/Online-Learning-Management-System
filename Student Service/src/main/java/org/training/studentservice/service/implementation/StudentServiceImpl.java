@@ -109,20 +109,16 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public ResponseDto updateAllStudents(Map<String, StudentDto> studentsMap) {
+    public ResponseDto updateAllStudents(String mentorId) {
 
-        Map<String, Student> studentMap = studentRepository.findAllById(studentsMap.keySet())
-                .stream()
-                .collect(Collectors.toMap(Student::getStudentId, Function.identity()));
-
-        List<Student> newStudents = new ArrayList<>();
-        studentsMap.entrySet().stream().forEach(students -> {
-
-            Student student = studentMap.get(students.getKey());
-            BeanUtils.copyProperties(students.getValue(), student);
-            newStudents.add(student);
+        List<Student> students = studentRepository.findAllByMentorId(mentorId);
+        List<Student> updateStudents = new ArrayList<>();
+        students.forEach(student -> {
+            student.setMentorId(null);
+            updateStudents.add(student);
         });
-        studentRepository.saveAll(newStudents);
+        System.out.println(students);
+        studentRepository.saveAll(updateStudents);
         return new ResponseDto(responseCode, "Students updated successfully");
     }
 }

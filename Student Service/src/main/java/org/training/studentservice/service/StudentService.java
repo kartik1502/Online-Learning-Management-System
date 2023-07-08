@@ -20,5 +20,5 @@ public interface StudentService {
 
     Mentor getAllStudentsByMentorId(String mentorId);
 
-    ResponseDto updateAllStudents(Map<String, StudentDto> studentsMap);
+    ResponseDto updateAllStudents(String mentorId);
 }

@@ -51,8 +51,8 @@ public class StudentController {
         return new ResponseEntity<>(studentService.getAllStudentsByMentorId(mentorId), HttpStatus.OK);
     }
 
-    @PutMapping("/ids")
-    public ResponseEntity<ResponseDto> updateAllStudents(@RequestBody Map<String, StudentDto> studentsMap) {
-        return new ResponseEntity<>(studentService.updateAllStudents(studentsMap), HttpStatus.OK);
+    @PutMapping("/mentors/{mentorId}")
+    public ResponseEntity<ResponseDto> updateStudents(@PathVariable String mentorId) {
+        return new ResponseEntity<>(studentService.updateAllStudents(mentorId), HttpStatus.OK);
     }
 }
