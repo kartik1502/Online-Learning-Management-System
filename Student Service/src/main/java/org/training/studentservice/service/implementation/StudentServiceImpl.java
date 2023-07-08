@@ -15,10 +15,7 @@ import org.training.studentservice.external.MentorService;
 import org.training.studentservice.repository.StudentRepository;
 import org.training.studentservice.service.StudentService;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -109,5 +106,23 @@ public class StudentServiceImpl implements StudentService {
         BeanUtils.copyProperties(mentorDto, mentor);
         mentor.setStudentDtos(students);
         return mentor;
+    }
+
+    @Override
+    public ResponseDto updateAllStudents(Map<String, StudentDto> studentsMap) {
+
+        Map<String, Student> studentMap = studentRepository.findAllById(studentsMap.keySet())
+                .stream()
+                .collect(Collectors.toMap(Student::getStudentId, Function.identity()));
+
+        List<Student> newStudents = new ArrayList<>();
+        studentsMap.entrySet().stream().forEach(students -> {
+
+            Student student = studentMap.get(students.getKey());
+            BeanUtils.copyProperties(students.getValue(), student);
+            newStudents.add(student);
+        });
+        studentRepository.saveAll(newStudents);
+        return new ResponseDto(responseCode, "Students updated successfully");
     }
 }

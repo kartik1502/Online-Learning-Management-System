@@ -12,6 +12,7 @@ import org.training.studentservice.service.StudentService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/students")
@@ -48,5 +49,10 @@ public class StudentController {
     @GetMapping("/mentors/{mentorId}")
     public ResponseEntity<Mentor> getAllStudentsByMentorId(@PathVariable String mentorId) {
         return new ResponseEntity<>(studentService.getAllStudentsByMentorId(mentorId), HttpStatus.OK);
+    }
+
+    @PutMapping("/ids")
+    public ResponseEntity<ResponseDto> updateAllStudents(@RequestBody Map<String, StudentDto> studentsMap) {
+        return new ResponseEntity<>(studentService.updateAllStudents(studentsMap), HttpStatus.OK);
     }
 }

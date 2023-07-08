@@ -5,6 +5,7 @@ import org.training.studentservice.dto.ResponseDto;
 import org.training.studentservice.dto.StudentDto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StudentService {
     ResponseDto addStudent(StudentDto studentDto);
@@ -18,4 +19,6 @@ public interface StudentService {
     ResponseDto updateStudent(String studentId, StudentDto studentDto);
 
     Mentor getAllStudentsByMentorId(String mentorId);
+
+    ResponseDto updateAllStudents(Map<String, StudentDto> studentsMap);
 }
