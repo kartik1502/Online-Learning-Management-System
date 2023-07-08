@@ -269,4 +269,27 @@ public class StudentServiceImplTest {
         assertNotNull(mentor);
         assertEquals(2, mentor.getStudentDtos().size());
     }
+
+    @Test
+    void testUpdateAllStudents() {
+
+        String mentorId = "12f00760-d63c-48e0-9739-589ecabb6e05";
+        List<Student> students = new ArrayList<>();
+        Student student = new Student();
+        student.setFirstName("Karthik");
+        student.setLastName("kulkarni");
+        student.setEmailId("kartikkulkarni1411@gmail.com");
+        students.add(student);
+        student = new Student();
+        student.setFirstName("Kishan");
+        student.setLastName("kulkarni");
+        student.setEmailId("kulkarnikishan1502@gmail.com");
+        students.add(student);
+
+        Mockito.when(studentRepository.findAllByMentorId(mentorId)).thenReturn(students);
+
+        ResponseDto responseDto = studentService.updateAllStudents(mentorId);
+        assertNotNull(responseDto);
+        assertEquals("Students updated successfully", responseDto.getResponseMessage());
+    }
 }
