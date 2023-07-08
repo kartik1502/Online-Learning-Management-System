@@ -9,6 +9,7 @@ import org.training.mentorservice.dto.ResponseDto;
 import org.training.mentorservice.entity.Mentor;
 import org.training.mentorservice.exception.ResourceConflictException;
 import org.training.mentorservice.exception.ResourceNotFound;
+import org.training.mentorservice.external.StudentService;
 import org.training.mentorservice.repository.MentorRepository;
 import org.training.mentorservice.service.MentorService;
 
@@ -22,6 +23,9 @@ public class MentorServiceImpl implements MentorService {
 
     @Autowired
     private MentorRepository mentorRepository;
+
+    @Autowired
+    private StudentService studentService;
 
     @Value("${spring.application.responseCode}")
     private String responseCode;
@@ -75,6 +79,7 @@ public class MentorServiceImpl implements MentorService {
                 () -> {
                     throw new ResourceNotFound("Mentor with mentor Id: " + mentorId + " not found");
                 });
+        studentService.updateStudents(mentorId);
         return new ResponseDto(responseCode,"Mentor Deleted Successfully");
     }
 
