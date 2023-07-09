@@ -45,9 +45,14 @@ public class StudentServiceImpl implements StudentService {
                 throw new ResourceConflictExists("Student with the same contact number already exists");
             }
         });
+        MentorDto mentor = mentorService.getMentorById(studentDto.getMentorId());
+        if(Objects.isNull(mentor)){
+            throw new ResourseNotFound("Mentor with mentor Id: "+studentDto.getMentorId()+" not found");
+        }
         Student newStudent = new Student();
         BeanUtils.copyProperties(studentDto, newStudent);
         newStudent.setStudentId(UUID.randomUUID().toString());
+        newStudent.setMentorId(studentDto.getMentorId());
         studentRepository.save(newStudent);
         return new ResponseDto(responseCode, "Student added successfully");
     }
@@ -101,7 +106,7 @@ public class StudentServiceImpl implements StudentService {
                     return studentDto;
                 }).collect(Collectors.toList());
 
-        MentorDto mentorDto = mentorService.getAllMentorsByIds(mentorId);
+        MentorDto mentorDto = mentorService.getMentorById(mentorId);
         Mentor mentor = new Mentor();
         BeanUtils.copyProperties(mentorDto, mentor);
         mentor.setStudentDtos(students);

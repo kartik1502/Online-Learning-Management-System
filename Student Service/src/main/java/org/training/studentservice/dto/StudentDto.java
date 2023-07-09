@@ -16,11 +16,11 @@ import javax.validation.constraints.Pattern;
 public class StudentDto {
 
     @NotNull
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "First name should contain only alphabets")
+    @Pattern(regexp = "^[a-zA-Z ]+$", message = "First name should contain only alphabets")
     private String firstName;
 
     @NotNull
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "Last name should contain only alphabets")
+    @Pattern(regexp = "^[a-zA-Z ]+$", message = "Last name should contain only alphabets")
     private String lastName;
 
     @NotNull
@@ -30,5 +30,8 @@ public class StudentDto {
     @NotNull
     @Pattern(regexp = "[6789][0-9]{9}", message = "Contact number should contain only 10 digits and should be a valid number")
     private String contactNo;
+
+    @NotNull
+    private String mentorId;
 
 }

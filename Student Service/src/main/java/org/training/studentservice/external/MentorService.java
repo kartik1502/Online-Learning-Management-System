@@ -9,5 +9,7 @@ import org.training.studentservice.dto.MentorDto;
 public interface MentorService {
 
     @GetMapping("/mentors/{mentorId}")
-    MentorDto getAllMentorsByIds(@PathVariable String mentorId);
+    MentorDto getMentorById(@PathVariable String mentorId);
+
+
 }
