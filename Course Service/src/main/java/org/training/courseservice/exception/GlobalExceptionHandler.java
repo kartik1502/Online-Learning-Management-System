@@ -31,4 +31,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleResourceNotFound(ResourceNotFound ex) {
         return new ResponseEntity<>(new ErrorResponse(errorCodeNotFound, ex.getMessage()), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(ResourceConflict.class)
+    protected ResponseEntity<Object> handleResourceConflict(ResourceConflict ex) {
+        return new ResponseEntity<>(new ErrorResponse(errorCodeBadRequest, ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
 }
