@@ -1,1 +1,25 @@
+spring:
+  application:
+    name: COURSE-SERVICE
+
+  config:
+    import: configserver:http://localhost:8080
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/learning_application_course
+    username: root
+    password: root
+
+  jpa:
+    show-sql: true
+
+    hibernate:
+      ddl-auto: update
+
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8084
 
