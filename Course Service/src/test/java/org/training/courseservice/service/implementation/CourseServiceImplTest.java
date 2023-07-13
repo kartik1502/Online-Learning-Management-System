@@ -13,6 +13,7 @@ import org.training.courseservice.entity.dto.CourseDto;
 import org.training.courseservice.entity.dto.MentorDto;
 import org.training.courseservice.entity.dto.ResponseDto;
 import org.training.courseservice.exception.ResourceConflict;
+import org.training.courseservice.exception.ResourceNotFound;
 import org.training.courseservice.external.MentorService;
 
 import java.util.Optional;
@@ -66,5 +67,42 @@ public class CourseServiceImplTest {
         ResponseDto responseDto = courseService.addCourse(courseDto);
         assertNotNull(responseDto);
         assertEquals("Course added successfully", responseDto.getResponseMessage());
+    }
+
+    @Test
+    void testUpdateCourse_CourseNotFound() {
+
+        String courseId = "e34395fd-8e66-4ab7-be23-717230903ad9";
+
+        Mockito.when(courseRepository.findById(courseId)).thenReturn(Optional.empty());
+
+        CourseDto courseDto = Mockito.mock(CourseDto.class);
+        ResourceNotFound exception = assertThrows(ResourceNotFound.class,
+                () -> courseService.updateCourse(courseId, courseDto));
+        assertNotNull(exception);
+        assertEquals("Course with course Id: "+courseId+" not found on the server", exception.getMessage());
+    }
+
+    @Test
+    void testUpdateCourse_Success() {
+
+        String courseId = "e34395fd-8e66-4ab7-be23-717230903ad9";
+        String mentorId = "baf7a5cc-7d01-431c-8c4e-086ea64ef822";
+        CourseDto courseDto = CourseDto.builder()
+                .name("C Basics")
+                .credits(4)
+                .mentorId("baf7a5cc-7d01-431c-8c4e-086ea64ef822")
+                .build();
+
+        Course course = new Course();
+        BeanUtils.copyProperties(courseDto, course);
+        Mockito.when(courseRepository.findById(courseId)).thenReturn(Optional.of(course));
+
+        MentorDto mentorDto = Mockito.mock(MentorDto.class);
+        Mockito.when(mentorService.getMentorById(mentorId)).thenReturn(mentorDto);
+
+        ResponseDto responseDto = courseService.updateCourse(courseId, courseDto);
+        assertNotNull(responseDto);
+        assertEquals("Course updated successfully", responseDto.getResponseMessage());
     }
 }

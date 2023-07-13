@@ -39,4 +39,18 @@ public class CourseControllerTest {
         assertEquals("Course added successfully", response.getBody().getResponseMessage());
     }
 
+    @Test
+    void testUpdateCourse() {
+
+        String courseId = "e34395fd-8e66-4ab7-be23-717230903ad9";
+        CourseDto courseDto = Mockito.mock(CourseDto.class);
+
+        Mockito.when(courseService.updateCourse(courseId, courseDto)).thenReturn(new ResponseDto("200", "Course updated successfully"));
+
+        ResponseEntity<ResponseDto> response = courseController.updateCourse(courseId, courseDto);
+        assertNotNull(response);
+        assertEquals("Course updated successfully", response.getBody().getResponseMessage());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
 }
