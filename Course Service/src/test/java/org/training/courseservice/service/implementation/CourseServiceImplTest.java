@@ -105,4 +105,33 @@ public class CourseServiceImplTest {
         assertNotNull(responseDto);
         assertEquals("Course updated successfully", responseDto.getResponseMessage());
     }
+
+    @Test
+    void testGetCourseById_CourseNotFound() {
+
+        String courseId = "baf7a5cc-7d01-431c-8c4e-086ea64ef822";
+
+        Mockito.when(courseRepository.findById(courseId)).thenReturn(Optional.empty());
+        ResourceNotFound exception = assertThrows(ResourceNotFound.class,
+                () -> courseService.getCourseById(courseId));
+        assertNotNull(exception);
+        assertEquals("Course with courseId: "+courseId+" not found on the server", exception.getMessage());
+    }
+
+    @Test
+    void testGetCourseById_Success() {
+
+        String courseId = "e34395fd-8e66-4ab7-be23-717230903ad9";
+        Course course = Course.builder()
+                .name("C Basics")
+                .credits(4)
+                .mentorId("baf7a5cc-7d01-431c-8c4e-086ea64ef822")
+                .build();
+
+        Mockito.when(courseRepository.findById(courseId)).thenReturn(Optional.of(course));
+
+        CourseDto courseDto = courseService.getCourseById(courseId);
+        assertNotNull(courseDto);
+        assertEquals(course.getName(), courseDto.getName());
+    }
 }

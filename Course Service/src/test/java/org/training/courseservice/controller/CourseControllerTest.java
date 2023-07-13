@@ -53,4 +53,21 @@ public class CourseControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
+    @Test
+    void testGetCourseById() {
+
+        String courseId = "e34395fd-8e66-4ab7-be23-717230903ad9";
+        CourseDto courseDto = CourseDto.builder()
+                .name("C Basics")
+                .credits(4)
+                .mentorId("baf7a5cc-7d01-431c-8c4e-086ea64ef822")
+                .build();
+
+        Mockito.when(courseService.getCourseById(courseId)).thenReturn(courseDto);
+
+        ResponseEntity<CourseDto> response = courseController.getCourseById(courseId);
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
 }
