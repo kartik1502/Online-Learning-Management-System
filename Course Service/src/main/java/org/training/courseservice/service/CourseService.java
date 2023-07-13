@@ -8,4 +8,6 @@ public interface CourseService {
     ResponseDto addCourse(CourseDto courseDto);
 
     ResponseDto updateCourse(String courseId, CourseDto courseDto);
+
+    CourseDto getCourseById(String courseId);
 }

@@ -26,4 +26,9 @@ public class CourseController {
     public ResponseEntity<ResponseDto> updateCourse(@PathVariable String courseId, @RequestBody CourseDto courseDto){
         return new ResponseEntity<>(courseService.updateCourse(courseId, courseDto), HttpStatus.OK);
     }
+
+    @GetMapping("/{courseId}")
+    public ResponseEntity<CourseDto> getCourseById(@PathVariable String courseId) {
+        return new ResponseEntity<>(courseService.getCourseById(courseId), HttpStatus.OK);
+    }
 }

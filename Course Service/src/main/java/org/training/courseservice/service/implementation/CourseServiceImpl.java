@@ -57,4 +57,14 @@ public class CourseServiceImpl implements CourseService {
         );
         return new ResponseDto("200", "Course updated successfully");
     }
+
+    @Override
+    public CourseDto getCourseById(String courseId) {
+
+        return courseRepository.findById(courseId).map(course -> {
+            CourseDto courseDto = new CourseDto();
+            BeanUtils.copyProperties(course, courseDto, "courseId");
+            return courseDto;
+        }).orElseThrow(() -> new ResourceNotFound("Course with courseId: "+courseId+" not found on the server"));
+    }
 }
