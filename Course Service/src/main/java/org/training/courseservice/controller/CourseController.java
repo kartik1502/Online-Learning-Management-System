@@ -9,6 +9,7 @@ import org.training.courseservice.entity.dto.ResponseDto;
 import org.training.courseservice.service.CourseService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/courses")
@@ -30,5 +31,10 @@ public class CourseController {
     @GetMapping("/{courseId}")
     public ResponseEntity<CourseDto> getCourseById(@PathVariable String courseId) {
         return new ResponseEntity<>(courseService.getCourseById(courseId), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CourseDto>> getAllCourses() {
+        return new ResponseEntity<>(courseService.getAllCourses(), HttpStatus.OK);
     }
 }

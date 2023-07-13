@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.training.courseservice.Repository.CourseRepository;
 import org.training.courseservice.entity.Course;
-import org.training.courseservice.entity.CourseStudent;
 import org.training.courseservice.entity.dto.CourseDto;
 import org.training.courseservice.entity.dto.ResponseDto;
 import org.training.courseservice.exception.ResourceConflict;
@@ -15,7 +14,9 @@ import org.training.courseservice.external.MentorService;
 import org.training.courseservice.external.StudentService;
 import org.training.courseservice.service.CourseService;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -66,5 +67,15 @@ public class CourseServiceImpl implements CourseService {
             BeanUtils.copyProperties(course, courseDto, "courseId");
             return courseDto;
         }).orElseThrow(() -> new ResourceNotFound("Course with courseId: "+courseId+" not found on the server"));
+    }
+
+    @Override
+    public List<CourseDto> getAllCourses() {
+
+        return courseRepository.findAll().stream().map(course -> {
+            CourseDto courseDto = new CourseDto();
+            BeanUtils.copyProperties(course, courseDto, "courseId");
+            return courseDto;
+        }).collect(Collectors.toList());
     }
 }
