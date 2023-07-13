@@ -8,9 +8,13 @@ import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.training.courseservice.entity.Course;
 import org.training.courseservice.entity.dto.CourseDto;
 import org.training.courseservice.entity.dto.ResponseDto;
 import org.training.courseservice.service.CourseService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -67,6 +71,30 @@ public class CourseControllerTest {
 
         ResponseEntity<CourseDto> response = courseController.getCourseById(courseId);
         assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void testGetAllCourses() {
+
+        List<CourseDto> courses = new ArrayList<>();
+        CourseDto course = CourseDto.builder()
+                .name("C Basics")
+                .credits(4)
+                .mentorId("baf7a5cc-7d01-431c-8c4e-086ea64ef822")
+                .build();
+        courses.add(course);
+        course = CourseDto.builder()
+                .name("Java Core")
+                .credits(5)
+                .mentorId("e34395fd-8e66-4ab7-be23-717230903ad9")
+                .build();
+        courses.add(course);
+        Mockito.when(courseService.getAllCourses()).thenReturn(courses);
+
+        ResponseEntity<List<CourseDto>> response = courseController.getAllCourses();
+        assertNotNull(response);
+        assertEquals(2, response.getBody().size());
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 

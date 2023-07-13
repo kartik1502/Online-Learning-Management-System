@@ -16,6 +16,8 @@ import org.training.courseservice.exception.ResourceConflict;
 import org.training.courseservice.exception.ResourceNotFound;
 import org.training.courseservice.external.MentorService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -133,5 +135,33 @@ public class CourseServiceImplTest {
         CourseDto courseDto = courseService.getCourseById(courseId);
         assertNotNull(courseDto);
         assertEquals(course.getName(), courseDto.getName());
+    }
+
+    @Test
+    void testgetAllCourses_OneCourse() {
+
+        List<Course> courses = new ArrayList<>();
+        Course course = Course.builder()
+                .name("C Basics")
+                .credits(4)
+                .mentorId("baf7a5cc-7d01-431c-8c4e-086ea64ef822")
+                .build();
+        courses.add(course);
+
+        Mockito.when(courseRepository.findAll()).thenReturn(courses);
+
+        List<CourseDto> result = courseService.getAllCourses();
+        assertNotNull(result);
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    void testgetAllCourses_EmptyList() {
+
+        Mockito.when(courseRepository.findAll()).thenReturn(new ArrayList<>());
+
+        List<CourseDto> result = courseService.getAllCourses();
+        assertNotNull(result);
+        assertEquals(0, result.size());
     }
 }
