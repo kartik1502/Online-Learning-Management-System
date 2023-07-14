@@ -159,13 +159,13 @@ public class StudentControllerTest {
     @Test
     void testGetAllStudentsByIds() {
 
-        List<Student> students = new ArrayList<>();
-        Student student = new Student();
+        List<StudentDto> students = new ArrayList<>();
+        StudentDto student = new StudentDto();
         student.setFirstName("Karthik");
         student.setLastName("kulkarni");
         student.setEmailId("kartikkulkarni1411@gmail.com");
         students.add(student);
-        student = new Student();
+        student = new StudentDto();
         student.setFirstName("Kishan");
         student.setLastName("kulkarni");
         student.setEmailId("kulkarnikishan1502@gmail.com");
@@ -174,7 +174,7 @@ public class StudentControllerTest {
 
         Mockito.when(studentService.getAllStudentsById(studentIds)).thenReturn(students);
 
-        ResponseEntity<List<Student>> response = studentController.getStudentsByIds(studentIds);
+        ResponseEntity<List<StudentDto>> response = studentController.getStudentsByIds(studentIds);
         assertNotNull(response);
         assertEquals(2, response.getBody().size());
         assertEquals(HttpStatus.OK, response.getStatusCode());
