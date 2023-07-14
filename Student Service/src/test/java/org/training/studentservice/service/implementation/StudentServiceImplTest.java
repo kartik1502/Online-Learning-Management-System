@@ -108,13 +108,37 @@ public class StudentServiceImplTest {
         studentDto.setLastName("Kulkarni");
         studentDto.setEmailId("kartikkulkarni1411@gmail.com");
         studentDto.setContactNo("6361921186");
+        studentDto.setMentorId("b54c5166-d94f-484f-9748-0a361726ce3b");
 
         Mockito.when(studentRepository.findStudentByEmailIdOrContactNo(Mockito.anyString(), Mockito.anyString())).thenReturn(Optional.empty());
 
+        MentorDto mentorDto = MentorDto.builder()
+                        .mentorName("Vikram")
+                        .emailId("vikaramsr1234@gmail.com")
+                        .contactNo("8495125784").build();
+        Mockito.when(mentorService.getMentorById("b54c5166-d94f-484f-9748-0a361726ce3b")).thenReturn(mentorDto);
         ResponseDto responseDto = studentService.addStudent(studentDto);
         assertNotNull(responseDto);
         assertEquals("Student added successfully", responseDto.getResponseMessage());
 
+    }
+
+    @Test
+    void testAddStudent_MentorNotFound() {
+
+        StudentDto studentDto = new StudentDto();
+        studentDto.setFirstName("Karthik");
+        studentDto.setLastName("Kulkarni");
+        studentDto.setEmailId("kartikkulkarni1411@gmail.com");
+        studentDto.setContactNo("6361921186");
+        studentDto.setMentorId("b54c5166-d94f-484f-9748-0a361726ce3b");
+
+        Mockito.when(studentRepository.findStudentByEmailIdOrContactNo(Mockito.anyString(), Mockito.anyString())).thenReturn(Optional.empty());
+        Mockito.when(mentorService.getMentorById(studentDto.getMentorId())).thenReturn(null);
+
+        ResourseNotFound exception = assertThrows(ResourseNotFound.class,
+                () -> studentService.addStudent(studentDto));
+        assertEquals("Mentor with mentor Id: "+studentDto.getMentorId()+" not found", exception.getMessage());
     }
 
     @Test
@@ -291,5 +315,45 @@ public class StudentServiceImplTest {
         ResponseDto responseDto = studentService.updateAllStudents(mentorId);
         assertNotNull(responseDto);
         assertEquals("Students updated successfully", responseDto.getResponseMessage());
+    }
+
+    @Test
+    void testGetAllStudentsByIds_oneStudent() {
+
+        List<Student> students = new ArrayList<>();
+        Student student = new Student();
+        student.setStudentId("b54c5166-d94f-484f-9748-0a361726ce3b");
+        student.setFirstName("Karthik");
+        student.setLastName("kulkarni");
+        student.setEmailId("kartikkulkarni1411@gmail.com");
+        student.setMentorId("1b5654b7-2fab-4990-a253-1cb071872793");
+        students.add(student);
+        List<String> studentsIds = List.of("b54c5166-d94f-484f-9748-0a361726ce3b");
+
+        Mockito.when(studentRepository.findAllById(studentsIds)).thenReturn(students);
+
+        List<StudentDto> result = studentService.getAllStudentsById(studentsIds);
+        assertNotNull(result);
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    void testGetAllStudentsByIds_oneStudentId_Invalid() {
+
+        List<Student> students = new ArrayList<>();
+        Student student = new Student();
+        student.setStudentId("b54c5166-d94f-484f-9748-0a361726ce3b");
+        student.setFirstName("Karthik");
+        student.setLastName("kulkarni");
+        student.setEmailId("kartikkulkarni1411@gmail.com");
+        student.setMentorId("1b5654b7-2fab-4990-a253-1cb071872793");
+        students.add(student);
+        List<String> studentsIds = List.of("b54c5166-d94f-484f-9748-0a361726ce3b", "1b5654b7-2fab-4990-a253-1cb071872793");
+
+        Mockito.when(studentRepository.findAllById(studentsIds)).thenReturn(students);
+
+        List<StudentDto> result = studentService.getAllStudentsById(studentsIds);
+        assertNotNull(result);
+        assertEquals(1, result.size());
     }
 }
