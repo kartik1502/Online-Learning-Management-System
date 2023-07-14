@@ -128,12 +128,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<StudentDto> getAllStudentsById(List<String> studentIds) {
+    public List<Student> getAllStudentsById(List<String> studentIds) {
 
-        return studentRepository.findAllById(studentIds).stream().map(student -> {
-            StudentDto studentDto = new StudentDto();
-            BeanUtils.copyProperties(student, studentDto, "studentId");
-            return studentDto;
-        }).collect(Collectors.toList());
+        return studentRepository.findAllById(studentIds);
     }
 }

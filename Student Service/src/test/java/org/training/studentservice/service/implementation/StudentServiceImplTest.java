@@ -332,7 +332,7 @@ public class StudentServiceImplTest {
 
         Mockito.when(studentRepository.findAllById(studentsIds)).thenReturn(students);
 
-        List<StudentDto> result = studentService.getAllStudentsById(studentsIds);
+        List<Student> result = studentService.getAllStudentsById(studentsIds);
         assertNotNull(result);
         assertEquals(1, result.size());
     }
@@ -352,7 +352,7 @@ public class StudentServiceImplTest {
 
         Mockito.when(studentRepository.findAllById(studentsIds)).thenReturn(students);
 
-        List<StudentDto> result = studentService.getAllStudentsById(studentsIds);
+        List<Student> result = studentService.getAllStudentsById(studentsIds);
         assertNotNull(result);
         assertEquals(1, result.size());
     }
