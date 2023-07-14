@@ -263,7 +263,7 @@ public class StudentServiceImplTest {
                 .emailId("kishankulkarni1502@gmail.com")
                 .designation("Professor").build();
 
-        Mockito.when(mentorService.getAllMentorsByIds(mentorId)).thenReturn(mentorDto);
+        Mockito.when(mentorService.getMentorById(mentorId)).thenReturn(mentorDto);
 
         Mentor mentor = studentService.getAllStudentsByMentorId(mentorId);
         assertNotNull(mentor);

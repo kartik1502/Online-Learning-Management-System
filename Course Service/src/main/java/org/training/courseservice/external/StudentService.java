@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.training.courseservice.config.FeignClientConfiguration;
-import org.training.courseservice.entity.dto.StudentDto;
+import org.training.courseservice.dto.StudentDto;
 
 @FeignClient(name = "STUDENT-SERVICE", configuration = FeignClientConfiguration.class)
 public interface StudentService {

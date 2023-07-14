@@ -8,7 +8,7 @@ import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.training.courseservice.entity.dto.ResponseDto;
+import org.training.courseservice.dto.ResponseDto;
 import org.training.courseservice.service.CourseStudentService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -1,4 +1,4 @@
-package org.training.courseservice.entity.dto;
+package org.training.courseservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

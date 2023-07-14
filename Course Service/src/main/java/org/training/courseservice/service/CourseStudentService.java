@@ -1,6 +1,6 @@
 package org.training.courseservice.service;
 
-import org.training.courseservice.entity.dto.ResponseDto;
+import org.training.courseservice.dto.ResponseDto;
 
 public interface CourseStudentService {
 

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.training.courseservice.Repository.CourseRepository;
 import org.training.courseservice.Repository.CourseStudentRepository;
 import org.training.courseservice.entity.CourseStudent;
-import org.training.courseservice.entity.dto.ResponseDto;
+import org.training.courseservice.dto.ResponseDto;
 import org.training.courseservice.exception.ResourceNotFound;
 import org.training.courseservice.external.StudentService;
 import org.training.courseservice.service.CourseStudentService;

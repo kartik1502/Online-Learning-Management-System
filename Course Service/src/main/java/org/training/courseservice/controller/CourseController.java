@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.training.courseservice.entity.dto.CourseDto;
-import org.training.courseservice.entity.dto.ResponseDto;
+import org.training.courseservice.dto.CourseDto;
+import org.training.courseservice.dto.ResponseDto;
 import org.training.courseservice.service.CourseService;
 
 import javax.validation.Valid;
