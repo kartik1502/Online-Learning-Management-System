@@ -21,4 +21,6 @@ public interface StudentService {
     Mentor getAllStudentsByMentorId(String mentorId);
 
     ResponseDto updateAllStudents(String mentorId);
+
+    List<StudentDto> getAllStudentsById(List<String> studentIds);
 }
