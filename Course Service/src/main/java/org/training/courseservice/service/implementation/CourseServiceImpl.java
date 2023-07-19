@@ -3,11 +3,15 @@ package org.training.courseservice.service.implementation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.training.courseservice.Repository.CourseRepository;
+import org.training.courseservice.Repository.CourseStudentRepository;
+import org.training.courseservice.dto.ViewCourse;
 import org.training.courseservice.entity.Course;
 import org.training.courseservice.dto.CourseDto;
 import org.training.courseservice.dto.ResponseDto;
+import org.training.courseservice.entity.CourseStudent;
 import org.training.courseservice.exception.ResourceConflict;
 import org.training.courseservice.exception.ResourceNotFound;
 import org.training.courseservice.external.MentorService;
@@ -15,7 +19,9 @@ import org.training.courseservice.external.StudentService;
 import org.training.courseservice.service.CourseService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,7 +34,7 @@ public class CourseServiceImpl implements CourseService {
     private MentorService mentorService;
 
     @Autowired
-    private StudentService studentService;
+    private CourseStudentRepository courseStudentRepository;
 
     @Value("${spring.application.responseCode}")
     private String responseCode;
@@ -77,5 +83,19 @@ public class CourseServiceImpl implements CourseService {
             BeanUtils.copyProperties(course, courseDto, "courseId");
             return courseDto;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ViewCourse> getCoursesByStudentId(String studentId) {
+
+        List<CourseStudent> courses = courseStudentRepository.findAllByStudentId(studentId);
+        Map<String, CourseStudent> courseMap = courses.stream().collect(Collectors.toMap(CourseStudent::getCourseId, Function.identity()));
+        return courseRepository.findAllByCourseIdIn(courses.stream().map(CourseStudent::getCourseId).collect(Collectors.toList()))
+                .stream().map(course -> {
+                    ViewCourse courseDto = new ViewCourse();
+                    BeanUtils.copyProperties(course, courseDto, "courseId");
+                    courseDto.setAwardedCredits(courseMap.get(course.getCourseId()).getCreditsAwarded());
+                    return courseDto;
+                }).collect(Collectors.toList());
     }
 }

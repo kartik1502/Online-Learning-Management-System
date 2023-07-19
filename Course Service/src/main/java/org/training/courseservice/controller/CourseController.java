@@ -6,8 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.training.courseservice.dto.CourseDto;
 import org.training.courseservice.dto.ResponseDto;
+import org.training.courseservice.dto.ViewCourse;
 import org.training.courseservice.service.CourseService;
 
+import javax.swing.text.View;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -36,5 +38,10 @@ public class CourseController {
     @GetMapping
     public ResponseEntity<List<CourseDto>> getAllCourses() {
         return new ResponseEntity<>(courseService.getAllCourses(), HttpStatus.OK);
+    }
+
+    @GetMapping("/students/{studentId}")
+    public ResponseEntity<List<ViewCourse>> getCoursesByStudentId(@PathVariable String studentId) {
+        return new ResponseEntity<>(courseService.getCoursesByStudentId(studentId), HttpStatus.OK);
     }
 }
