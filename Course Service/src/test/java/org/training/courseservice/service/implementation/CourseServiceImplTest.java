@@ -8,10 +8,13 @@ import org.mockito.Mockito;
 import org.springframework.beans.BeanUtils;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.training.courseservice.Repository.CourseRepository;
+import org.training.courseservice.Repository.CourseStudentRepository;
+import org.training.courseservice.dto.ViewCourse;
 import org.training.courseservice.entity.Course;
 import org.training.courseservice.dto.CourseDto;
 import org.training.courseservice.dto.MentorDto;
 import org.training.courseservice.dto.ResponseDto;
+import org.training.courseservice.entity.CourseStudent;
 import org.training.courseservice.exception.ResourceConflict;
 import org.training.courseservice.exception.ResourceNotFound;
 import org.training.courseservice.external.MentorService;
@@ -19,6 +22,7 @@ import org.training.courseservice.external.MentorService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,6 +35,8 @@ public class CourseServiceImplTest {
     @Mock
     private CourseRepository courseRepository;
 
+    @Mock
+    private CourseStudentRepository courseStudentRepository;
     @Mock
     private MentorService mentorService;
 
@@ -163,5 +169,47 @@ public class CourseServiceImplTest {
         List<CourseDto> result = courseService.getAllCourses();
         assertNotNull(result);
         assertEquals(0, result.size());
+    }
+
+    @Test
+    void testGetCoursesByStudentId() {
+
+        String studentId = "baf7a5cc-7d01-431c-8c4e-086ea64ef822";
+
+        List<CourseStudent> courseStudents = new ArrayList<>();
+        CourseStudent courseStudent = CourseStudent.builder()
+                .courseId("e34395fd-8e66-4ab7-be23-717230903ad9")
+                .studentId(studentId)
+                .build();
+        courseStudents.add(courseStudent);
+        courseStudent = CourseStudent.builder()
+                .courseId("f743167d-8k84-4ab7-be23-717230903ad9")
+                .studentId(studentId)
+                .build();
+        courseStudents.add(courseStudent);
+
+        Mockito.when(courseStudentRepository.findAllByStudentId(studentId)).thenReturn(courseStudents);
+        List<String> courseIds = courseStudents.stream().map(CourseStudent::getCourseId).collect(Collectors.toList());
+
+        List<Course> courses = new ArrayList<>();
+        Course course = Course.builder()
+                .courseId("e34395fd-8e66-4ab7-be23-717230903ad9")
+                .name("C Basics")
+                .credits(4)
+                .mentorId("baf7a5cc-7d01-431c-8c4e-086ea64ef822")
+                .build();
+        courses.add(course);
+        course = Course.builder()
+                .courseId("f743167d-8k84-4ab7-be23-717230903ad9")
+                .name("Java Basics")
+                .credits(6)
+                .mentorId("baf7a5cc-7d01-431c-8c4e-086ea64ef822")
+                .build();
+        courses.add(course);
+        Mockito.when(courseRepository.findAllByCourseIdIn(courseIds)).thenReturn(courses);
+
+        List<ViewCourse> result = courseService.getCoursesByStudentId(studentId);
+        assertNotNull(result);
+        assertEquals(2, result.size());
     }
 }

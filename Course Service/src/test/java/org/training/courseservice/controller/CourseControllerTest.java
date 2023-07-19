@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.training.courseservice.dto.CourseDto;
 import org.training.courseservice.dto.ResponseDto;
+import org.training.courseservice.dto.ViewCourse;
 import org.training.courseservice.service.CourseService;
 
 import java.util.ArrayList;
@@ -95,6 +96,30 @@ public class CourseControllerTest {
         assertNotNull(response);
         assertEquals(2, response.getBody().size());
         assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void testGetCoursesByStudentId() {
+
+        String studentId = "baf7a5cc-7d01-431c-8c4e-086ea64ef822";
+        List<ViewCourse> courses = new ArrayList<>();
+        ViewCourse course = ViewCourse.builder()
+                .name("C Basics")
+                .credits(4)
+                .awardedCredits(1)
+                .build();
+        courses.add(course);
+        course = ViewCourse.builder()
+                .name("Java Core")
+                .credits(5)
+                .awardedCredits(2)
+                .build();
+        courses.add(course);
+        Mockito.when(courseService.getCoursesByStudentId(studentId)).thenReturn(courses);
+
+        ResponseEntity<List<ViewCourse>> response = courseController.getCoursesByStudentId(studentId);
+        assertNotNull(response);
+        assertEquals(2, response.getBody().size());
     }
 
 }
