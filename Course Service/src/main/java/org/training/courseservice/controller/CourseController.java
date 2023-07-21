@@ -40,8 +40,8 @@ public class CourseController {
         return new ResponseEntity<>(courseService.getAllCourses(), HttpStatus.OK);
     }
 
-    @GetMapping("/students/{studentId}")
-    public ResponseEntity<List<ViewCourse>> getCoursesByStudentId(@PathVariable String studentId) {
-        return new ResponseEntity<>(courseService.getCoursesByStudentId(studentId), HttpStatus.OK);
+    @GetMapping("/info/{courseId}")
+    public ResponseEntity<ViewCourse> getCoursesByStudentId(@PathVariable String courseId) {
+        return new ResponseEntity<>(courseService.getStudentCourseInfo(courseId), HttpStatus.OK);
     }
 }

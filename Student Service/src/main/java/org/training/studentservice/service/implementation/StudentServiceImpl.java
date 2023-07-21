@@ -4,19 +4,16 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.training.studentservice.dto.Mentor;
-import org.training.studentservice.dto.MentorDto;
-import org.training.studentservice.dto.ResponseDto;
-import org.training.studentservice.dto.StudentDto;
+import org.training.studentservice.dto.*;
 import org.training.studentservice.entity.Student;
 import org.training.studentservice.exception.ResourceConflictExists;
 import org.training.studentservice.exception.ResourseNotFound;
+import org.training.studentservice.external.CourseService;
 import org.training.studentservice.external.MentorService;
 import org.training.studentservice.repository.StudentRepository;
 import org.training.studentservice.service.StudentService;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +24,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private MentorService mentorService;
+
+    @Autowired
+    private CourseService courseService;
 
     @Value("${spring.application.responseCode}")
     private String responseCode;
@@ -135,5 +135,24 @@ public class StudentServiceImpl implements StudentService {
             BeanUtils.copyProperties(student, studentDto, "studentId");
             return studentDto;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public StudentCourse getStudentCourse(String courseId) {
+
+        Course course = courseService.getCourseById(courseId);
+        List<StudentDto> students = studentRepository.findAllById(course.getStudentIds()).stream()
+                .map(student -> {
+                    StudentDto studentDto = new StudentDto();
+                    BeanUtils.copyProperties(student, studentDto, "studentId");
+                    return studentDto;
+                }).collect(Collectors.toList());
+
+        return StudentCourse.builder()
+                .name(course.getName())
+                .credits(course.getCredits())
+                .awardedCredits(course.getAwardedCredits())
+                .students(students)
+                .build();
     }
 }

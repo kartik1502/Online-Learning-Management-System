@@ -2,6 +2,7 @@ package org.training.studentservice.service;
 
 import org.training.studentservice.dto.Mentor;
 import org.training.studentservice.dto.ResponseDto;
+import org.training.studentservice.dto.StudentCourse;
 import org.training.studentservice.dto.StudentDto;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface StudentService {
     ResponseDto updateAllStudents(String mentorId);
 
     List<StudentDto> getAllStudentsById(List<String> studentIds);
+
+    StudentCourse getStudentCourse(String courseId);
 }

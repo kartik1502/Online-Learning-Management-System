@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.training.studentservice.dto.Mentor;
 import org.training.studentservice.dto.ResponseDto;
+import org.training.studentservice.dto.StudentCourse;
 import org.training.studentservice.dto.StudentDto;
 import org.training.studentservice.service.StudentService;
 
@@ -57,5 +58,10 @@ public class StudentController {
     @GetMapping("/ids")
     public ResponseEntity<List<StudentDto>> getStudentsByIds(@RequestBody List<String> studentIds) {
         return new ResponseEntity<>(studentService.getAllStudentsById(studentIds), HttpStatus.OK);
+    }
+
+    @GetMapping("/{studentId}/courses")
+    public ResponseEntity<StudentCourse> getStudentCourses(@PathVariable String studentId) {
+        return new ResponseEntity<>(studentService.getStudentCourse(studentId), HttpStatus.OK);
     }
 }
