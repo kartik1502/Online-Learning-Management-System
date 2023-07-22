@@ -171,45 +171,47 @@ public class CourseServiceImplTest {
         assertEquals(0, result.size());
     }
 
-//    @Test
-//    void testGetCoursesByStudentId() {
-//
-//        String studentId = "baf7a5cc-7d01-431c-8c4e-086ea64ef822";
-//
-//        List<CourseStudent> courseStudents = new ArrayList<>();
-//        CourseStudent courseStudent = CourseStudent.builder()
-//                .courseId("e34395fd-8e66-4ab7-be23-717230903ad9")
-//                .studentId(studentId)
-//                .build();
-//        courseStudents.add(courseStudent);
-//        courseStudent = CourseStudent.builder()
-//                .courseId("f743167d-8k84-4ab7-be23-717230903ad9")
-//                .studentId(studentId)
-//                .build();
-//        courseStudents.add(courseStudent);
-//
-//        Mockito.when(courseStudentRepository.findAllByStudentId(studentId)).thenReturn(courseStudents);
-//        List<String> courseIds = courseStudents.stream().map(CourseStudent::getCourseId).collect(Collectors.toList());
-//
-//        List<Course> courses = new ArrayList<>();
-//        Course course = Course.builder()
-//                .courseId("e34395fd-8e66-4ab7-be23-717230903ad9")
-//                .name("C Basics")
-//                .credits(4)
-//                .mentorId("baf7a5cc-7d01-431c-8c4e-086ea64ef822")
-//                .build();
-//        courses.add(course);
-//        course = Course.builder()
-//                .courseId("f743167d-8k84-4ab7-be23-717230903ad9")
-//                .name("Java Basics")
-//                .credits(6)
-//                .mentorId("baf7a5cc-7d01-431c-8c4e-086ea64ef822")
-//                .build();
-//        courses.add(course);
-//        Mockito.when(courseRepository.findAllByCourseIdIn(courseIds)).thenReturn(courses);
-//
-//        List<ViewCourse> result = courseService.getCoursesByStudentId(studentId);
-//        assertNotNull(result);
-//        assertEquals(2, result.size());
-//    }
+    @Test
+    void testGetStudentCourseInfo_CourseNotFound() {
+
+        String courseId = "f4c77ecb-8d76-48b6-9c5f-0850a4e2ac3b";
+        Mockito.when(courseRepository.findById(courseId)).thenReturn(Optional.empty());
+        ResourceNotFound exception = assertThrows(ResourceNotFound.class,
+                () -> courseService.getStudentCourseInfo(courseId));
+        assertNotNull(exception);
+        assertEquals("Course with courseId: "+courseId+" not found on the server", exception.getMessage());
+    }
+
+    @Test
+    void testGetStudentCourseInfo_Success() {
+
+        String courseId = "542e099d-2115-4f3f-be85-942a2ffc4749";
+        Course course = Course.builder()
+                .courseId("542e099d-2115-4f3f-be85-942a2ffc4749")
+                .name("C Basics")
+                .credits(5)
+                .mentorId("baf7a5cc-7d01-431c-8c4e-086ea64ef822")
+                .build();
+        Mockito.when(courseRepository.findById(courseId)).thenReturn(Optional.of(course));
+
+        List<CourseStudent> courseStudents = new ArrayList<>();
+        CourseStudent courseStudent = CourseStudent.builder()
+                .studentId("e34395fd-8e66-4ab7-be23-717230903ad9")
+                .courseId(course.getCourseId())
+                .creditsAwarded(2)
+                .build();
+        courseStudents.add(courseStudent);
+        courseStudent = CourseStudent.builder()
+                .studentId("f4c77ecb-8d76-48b6-9c5f-0850a4e2ac3b")
+                .courseId(course.getCourseId())
+                .creditsAwarded(3)
+                .build();
+        courseStudents.add(courseStudent);
+
+        Mockito.when(courseStudentRepository.findAllByCourseId(courseId)).thenReturn(courseStudents);
+
+        ViewCourse viewCourse = courseService.getStudentCourseInfo(courseId);
+        assertNotNull(viewCourse);
+        assertEquals(2, viewCourse.getStudentsCredits().size());
+    }
 }

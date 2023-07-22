@@ -86,9 +86,9 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public ViewCourse getStudentCourseInfo(String courseId) {
 
-        List<CourseStudent> courseStudents = courseStudentRepository.findAllByCourseId(courseId);
         Course course = courseRepository.findById(courseId).orElseThrow(
                 () ->new ResourceNotFound("Course with courseId: "+courseId+" not found on the server"));
+        List<CourseStudent> courseStudents = courseStudentRepository.findAllByCourseId(courseId);
 
         return ViewCourse.builder()
                 .name(course.getName())

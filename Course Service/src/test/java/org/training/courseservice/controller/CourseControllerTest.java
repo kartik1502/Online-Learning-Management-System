@@ -14,7 +14,9 @@ import org.training.courseservice.dto.ViewCourse;
 import org.training.courseservice.service.CourseService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -98,28 +100,21 @@ public class CourseControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
-//    @Test
-//    void testGetCoursesByStudentId() {
-//
-//        String studentId = "baf7a5cc-7d01-431c-8c4e-086ea64ef822";
-//        List<ViewCourse> courses = new ArrayList<>();
-//        ViewCourse course = ViewCourse.builder()
-//                .name("C Basics")
-//                .credits(4)
-//                .awardedCredits(1)
-//                .build();
-//        courses.add(course);
-//        course = ViewCourse.builder()
-//                .name("Java Core")
-//                .credits(5)
-//                .awardedCredits(2)
-//                .build();
-//        courses.add(course);
-//        Mockito.when(courseService.getCoursesByStudentId(studentId)).thenReturn(courses);
-//
-//        ResponseEntity<List<ViewCourse>> response = courseController.getCoursesByStudentId(studentId);
-//        assertNotNull(response);
-//        assertEquals(2, response.getBody().size());
-//    }
+    @Test
+    void testGetCoursesByStudentId() {
 
+        String courseId = "e34395fd-8e66-4ab7-be23-717230903ad9";
+        ViewCourse viewCourse = ViewCourse.builder()
+                .name("C Basics")
+                .credits(5)
+                .studentsCredits(Map.of("baf7a5cc-7d01-431c-8c4e-086ea64ef822", 4, "e34395fd-8e66-4ab7-be23-717230903ad9", 5))
+                .build();
+
+        Mockito.when(courseService.getStudentCourseInfo(courseId)).thenReturn(viewCourse);
+
+        ResponseEntity<ViewCourse> response = courseController.getCoursesByStudentId(courseId);
+        assertNotNull(response);
+        assertEquals(2, response.getBody().getStudentsCredits().size());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
 }
