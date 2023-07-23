@@ -1,5 +1,6 @@
 package org.training.studentservice.service;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.training.studentservice.dto.Mentor;
 import org.training.studentservice.dto.ResponseDto;
 import org.training.studentservice.dto.StudentCourse;
@@ -25,5 +26,5 @@ public interface StudentService {
 
     List<StudentDto> getAllStudentsById(List<String> studentIds);
 
-    StudentCourse getStudentCourse(String courseId);
+    StudentCourse getStudentCourseDetails(@PathVariable String courseId);
 }

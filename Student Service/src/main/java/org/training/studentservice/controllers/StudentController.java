@@ -60,8 +60,8 @@ public class StudentController {
         return new ResponseEntity<>(studentService.getAllStudentsById(studentIds), HttpStatus.OK);
     }
 
-    @GetMapping("/{studentId}/courses")
-    public ResponseEntity<StudentCourse> getStudentCourses(@PathVariable String studentId) {
-        return new ResponseEntity<>(studentService.getStudentCourse(studentId), HttpStatus.OK);
+    @GetMapping("/courses/{courseId}")
+    public ResponseEntity<StudentCourse> getStudentCourseDetails(@PathVariable String courseId) {
+        return new ResponseEntity<>(studentService.getStudentCourseDetails(courseId), HttpStatus.OK);
     }
 }

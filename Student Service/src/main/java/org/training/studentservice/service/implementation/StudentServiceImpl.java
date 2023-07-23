@@ -14,6 +14,7 @@ import org.training.studentservice.repository.StudentRepository;
 import org.training.studentservice.service.StudentService;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -138,21 +139,28 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public StudentCourse getStudentCourse(String courseId) {
+    public StudentCourse getStudentCourseDetails(String courseId) {
 
-        Course course = courseService.getCourseById(courseId);
-        List<StudentDto> students = studentRepository.findAllById(course.getStudentIds()).stream()
-                .map(student -> {
-                    StudentDto studentDto = new StudentDto();
-                    BeanUtils.copyProperties(student, studentDto, "studentId");
-                    return studentDto;
-                }).collect(Collectors.toList());
+        ViewCourse viewCourse = courseService.getCoursesByStudentId(courseId);
+        Map<String, Student> studentMap = studentRepository.findAllById(viewCourse.getStudentsCredits().keySet())
+                .stream().collect(Collectors.toMap(Student::getStudentId, Function.identity()));
+
+        List<StudentCredits> studentCredits = viewCourse.getStudentsCredits().entrySet().stream()
+                .map(studentCredit -> {
+                    Student student = studentMap.get(studentCredit.getKey());
+                    return StudentCredits.builder()
+                            .firstName(student.getFirstName())
+                            .lastName(student.getLastName())
+                            .awardedCredits(studentCredit.getValue())
+                            .build();
+                })
+                .collect(Collectors.toList());
+
 
         return StudentCourse.builder()
-                .name(course.getName())
-                .credits(course.getCredits())
-                .awardedCredits(course.getAwardedCredits())
-                .students(students)
+                .name(viewCourse.getName())
+                .credits(viewCourse.getCredits())
+                .students(studentCredits)
                 .build();
     }
 }

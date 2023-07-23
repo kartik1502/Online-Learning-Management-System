@@ -5,17 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class StudentCourse {
+public class ViewCourse {
 
     private String name;
 
     private int credits;
 
-    private List<StudentCredits> students;
+    private Map<String, Integer> studentsCredits;
 }
