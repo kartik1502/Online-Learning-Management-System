@@ -8,10 +8,7 @@ import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.training.studentservice.dto.Mentor;
-import org.training.studentservice.dto.MentorDto;
-import org.training.studentservice.dto.ResponseDto;
-import org.training.studentservice.dto.StudentDto;
+import org.training.studentservice.dto.*;
 import org.training.studentservice.entity.Student;
 import org.training.studentservice.service.StudentService;
 
@@ -178,5 +175,23 @@ public class StudentControllerTest {
         assertNotNull(response);
         assertEquals(2, response.getBody().size());
         assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void testGetStudentCourseDetails() {
+
+        String courseId = "e34395fd-8e66-4ab7-be23-717230903ad9";
+        StudentCourse studentCourse = StudentCourse.builder()
+                .name("C Basics")
+                .credits(5)
+                .students(List.of(new StudentCredits("Karthik", "Kulkarni", 2)))
+                .build();
+
+        Mockito.when(studentService.getStudentCourseDetails(courseId)).thenReturn(studentCourse);
+
+        ResponseEntity<StudentCourse> response = studentController.getStudentCourseDetails(courseId);
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, response.getBody().getStudents().size());
     }
 }

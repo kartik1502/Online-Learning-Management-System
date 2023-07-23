@@ -7,19 +7,15 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.BeanUtils;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.training.studentservice.dto.Mentor;
-import org.training.studentservice.dto.MentorDto;
-import org.training.studentservice.dto.ResponseDto;
-import org.training.studentservice.dto.StudentDto;
+import org.training.studentservice.dto.*;
 import org.training.studentservice.entity.Student;
 import org.training.studentservice.exception.ResourceConflictExists;
 import org.training.studentservice.exception.ResourseNotFound;
+import org.training.studentservice.external.CourseService;
 import org.training.studentservice.external.MentorService;
 import org.training.studentservice.repository.StudentRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,6 +30,9 @@ public class StudentServiceImplTest {
 
     @Mock
     private MentorService mentorService;
+
+    @Mock
+    private CourseService courseService;
     @Test
     void testAddStudent_StudentPresent_SameEmailId(){
 
@@ -355,5 +354,40 @@ public class StudentServiceImplTest {
         List<StudentDto> result = studentService.getAllStudentsById(studentsIds);
         assertNotNull(result);
         assertEquals(1, result.size());
+    }
+
+    @Test
+    void testGetStudentCourseDetails() {
+
+        String courseId = "e34395fd-8e66-4ab7-be23-717230903ad9";
+        ViewCourse viewCourse = ViewCourse.builder()
+                .name("C Basics")
+                .credits(5)
+                .studentsCredits(Map.of("baf7a5cc-7d01-431c-8c4e-086ea64ef822", 4, "e34395fd-8e66-4ab7-be23-717230903ad9", 5))
+                .build();
+
+        Mockito.when(courseService.getCoursesByStudentId(courseId)).thenReturn(viewCourse);
+
+        List<Student> students = new ArrayList<>();
+        Student student = new Student();
+        student.setStudentId("baf7a5cc-7d01-431c-8c4e-086ea64ef822");
+        student.setFirstName("Karthik");
+        student.setLastName("kulkarni");
+        student.setEmailId("kartikkulkarni1411@gmail.com");
+        students.add(student);
+        student = new Student();
+        student.setStudentId("e34395fd-8e66-4ab7-be23-717230903ad9");
+        student.setFirstName("Kishan");
+        student.setLastName("kulkarni");
+        student.setEmailId("kulkarnikishan1502@gmail.com");
+        students.add(student);
+
+        Set<String> studentIds = viewCourse.getStudentsCredits().keySet();
+        Mockito.when(studentRepository.findAllById(studentIds)).thenReturn(students);
+
+        StudentCourse course = studentService.getStudentCourseDetails(courseId);
+        assertNotNull(course);
+        assertEquals(5, course.getCredits());
+        assertEquals(2, course.getStudents().size());
     }
 }
