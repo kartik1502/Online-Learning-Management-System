@@ -20,6 +20,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Value("${spring.application.not_found}")
     private String errorCodeNotFound;
 
+    @Value("${spring.application.not_acceptable}")
+    private String errorCodeNotAcceptable;
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -35,5 +38,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ResourceConflict.class)
     protected ResponseEntity<Object> handleResourceConflict(ResourceConflict ex) {
         return new ResponseEntity<>(new ErrorResponse(errorCodeBadRequest, ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ResourceNotAcceptable.class)
+    protected ResponseEntity<Object> handleResourceNotAcceptable(ResourceNotAcceptable ex) {
+        return new ResponseEntity<>(new ErrorResponse(errorCodeNotAcceptable, ex.getMessage()), HttpStatus.NOT_ACCEPTABLE);
     }
 }
