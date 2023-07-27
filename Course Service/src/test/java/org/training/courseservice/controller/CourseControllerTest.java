@@ -76,29 +76,30 @@ public class CourseControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
-//    @Test
-//    void testGetAllCourses() {
-//
-//        List<CourseDto> courses = new ArrayList<>();
-//        CourseDto course = CourseDto.builder()
-//                .name("C Basics")
-//                .credits(4)
-//                .mentorId("baf7a5cc-7d01-431c-8c4e-086ea64ef822")
-//                .build();
-//        courses.add(course);
-//        course = CourseDto.builder()
-//                .name("Java Core")
-//                .credits(5)
-//                .mentorId("e34395fd-8e66-4ab7-be23-717230903ad9")
-//                .build();
-//        courses.add(course);
-//        Mockito.when(courseService.getAllCourses()).thenReturn(courses);
-//
-//        ResponseEntity<List<CourseDto>> response = courseController.getAllCourses();
-//        assertNotNull(response);
-//        assertEquals(2, response.getBody().size());
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-//    }
+    @Test
+    void testGetAllCourses() {
+
+        List<CourseDto> courses = new ArrayList<>();
+        String name = "C";
+        CourseDto course = CourseDto.builder()
+                .name("C Basics")
+                .credits(4)
+                .mentorId("baf7a5cc-7d01-431c-8c4e-086ea64ef822")
+                .build();
+        courses.add(course);
+        course = CourseDto.builder()
+                .name("Java Core")
+                .credits(5)
+                .mentorId("e34395fd-8e66-4ab7-be23-717230903ad9")
+                .build();
+        courses.add(course);
+        Mockito.when(courseService.getAllCourses(name)).thenReturn(courses);
+
+        ResponseEntity<List<CourseDto>> response = courseController.getAllCourses(name);
+        assertNotNull(response);
+        assertEquals(2, response.getBody().size());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
 
     @Test
     void testGetCoursesByStudentId() {
