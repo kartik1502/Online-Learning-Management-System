@@ -146,6 +146,7 @@ public class CourseServiceImplTest {
     @Test
     void testgetAllCourses_OneCourse() {
 
+        String name = "c";
         List<Course> courses = new ArrayList<>();
         Course course = Course.builder()
                 .name("C Basics")
@@ -154,9 +155,9 @@ public class CourseServiceImplTest {
                 .build();
         courses.add(course);
 
-        Mockito.when(courseRepository.findAll()).thenReturn(courses);
+        Mockito.when(courseRepository.findByNameIsContainingIgnoreCase(name)).thenReturn(courses);
 
-        List<CourseDto> result = courseService.getAllCourses();
+        List<CourseDto> result = courseService.getAllCourses(name);
         assertNotNull(result);
         assertEquals(1, result.size());
     }
@@ -166,7 +167,7 @@ public class CourseServiceImplTest {
 
         Mockito.when(courseRepository.findAll()).thenReturn(new ArrayList<>());
 
-        List<CourseDto> result = courseService.getAllCourses();
+        List<CourseDto> result = courseService.getAllCourses("");
         assertNotNull(result);
         assertEquals(0, result.size());
     }
