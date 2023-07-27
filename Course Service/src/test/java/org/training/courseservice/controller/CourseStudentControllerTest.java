@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.training.courseservice.dto.ResponseDto;
+import org.training.courseservice.dto.StudentCourseDto;
 import org.training.courseservice.service.CourseStudentService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,5 +38,19 @@ public class CourseStudentControllerTest {
         assertNotNull(response);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals("Student registered for the course successfully", response.getBody().getResponseMessage());
+    }
+
+    @Test
+    void testUpdateCredits() {
+
+        StudentCourseDto studentCourseDto = Mockito.mock(StudentCourseDto.class);
+        ResponseDto responseDto = new ResponseDto("200","Credits updated successfully");
+
+        Mockito.when(courseStudentService.updateCredits(studentCourseDto)).thenReturn(responseDto);
+
+        ResponseEntity<ResponseDto> response = courseStudentController.updateCredits(studentCourseDto);
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Credits updated successfully", response.getBody().getResponseMessage());
     }
 }

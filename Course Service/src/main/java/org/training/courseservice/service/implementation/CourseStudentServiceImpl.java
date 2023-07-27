@@ -14,7 +14,6 @@ import org.training.courseservice.exception.ResourceNotFound;
 import org.training.courseservice.external.StudentService;
 import org.training.courseservice.service.CourseStudentService;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
