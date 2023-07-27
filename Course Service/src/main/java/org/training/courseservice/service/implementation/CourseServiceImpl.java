@@ -74,9 +74,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseDto> getAllCourses() {
+    public List<CourseDto> getAllCourses(String name) {
 
-        return courseRepository.findAll().stream().map(course -> {
+        return courseRepository.findByNameIsContainingIgnoreCase(name).stream().map(course -> {
             CourseDto courseDto = new CourseDto();
             BeanUtils.copyProperties(course, courseDto, "courseId");
             return courseDto;

@@ -10,5 +10,5 @@ public interface CourseRepository extends JpaRepository<Course, String> {
 
     Optional<Course> findCourseByNameAndMentorId(String name, String mentorId);
 
-    List<Course> findAllByCourseIdIn(List<String> courseIds);
+    List<Course> findByNameIsContainingIgnoreCase(String name);
 }

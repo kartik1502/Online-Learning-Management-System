@@ -36,8 +36,8 @@ public class CourseController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CourseDto>> getAllCourses() {
-        return new ResponseEntity<>(courseService.getAllCourses(), HttpStatus.OK);
+    public ResponseEntity<List<CourseDto>> getAllCourses(@RequestParam String name) {
+        return new ResponseEntity<>(courseService.getAllCourses(name), HttpStatus.OK);
     }
 
     @GetMapping("/info/{courseId}")
